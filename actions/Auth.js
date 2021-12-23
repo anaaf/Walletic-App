@@ -4,7 +4,7 @@ export const verifyPhone = phoneNumber => {
   //   verifying phone number and delivering msg on mobile
   return async dispatch => {
     try {
-      const res = await fetch(`${baseUrl}/verify/phon`, {
+      const res = await fetch(`${baseUrl}/verify/phone`, {
         method: 'POST',
         body: JSON.stringify({
           phoneNo: `+92${phoneNumber}`,
