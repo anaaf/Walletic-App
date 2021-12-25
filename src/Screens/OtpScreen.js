@@ -22,7 +22,7 @@ import color from '../colors/colors';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {verifyCode} from '../../actions/Auth';
-// import * as ReadSms from 'react-native-read-sms/ReadSms';
+
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
 
