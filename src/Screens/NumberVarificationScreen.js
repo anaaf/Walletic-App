@@ -111,7 +111,7 @@ const NumberVarificationScreen = () => {
                     alignItems: 'center',
                     flexDirection: 'row',
                   }}>
-                  <Text style={styles.buttonText}>Next</Text>
+                  <Text style={styles.buttonText}>Sign up</Text>
                   <Icon
                     name="arrow-right"
                     size={RFValue(18, 580)}
@@ -120,6 +120,23 @@ const NumberVarificationScreen = () => {
                 </View>
               </TouchableOpacity>
             )}
+            <TouchableOpacity
+              style={{...styles.button, marginTop: 10}}
+              onPress={() => nav.navigate('Login')}>
+              <View
+                style={{
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}>
+                <Text style={styles.buttonText}>Login</Text>
+                <Icon
+                  name="arrow-right"
+                  size={RFValue(18, 580)}
+                  color="white"
+                />
+              </View>
+            </TouchableOpacity>
           </ScrollView>
         </View>
       </View>

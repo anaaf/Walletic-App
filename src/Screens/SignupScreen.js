@@ -1,4 +1,4 @@
-import React, {useState, useReducer, useEffect} from 'react';
+import React, {useState, useReducer, useRef} from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,12 @@ import {
   Dimensions,
   ScrollView,
   TouchableWithoutFeedback,
+  ActivityIndicator,
   Keyboard,
   Alert,
 } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import {useNavigation} from '@react-navigation/native';
 //import Icon from 'react-native-ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
@@ -20,9 +23,12 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import color from '../colors/colors';
 import {useSelector, useDispatch} from 'react-redux';
-
+import {signUp} from '../../actions/Auth';
+import {isLogBoxErrorMessage} from 'react-native/Libraries/LogBox/Data/LogBoxData';
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
+const data = ['business, consumer'];
+
 const intialState = {
   name: {fullname: '', isValid: false},
   emailAddress: {email: '', isValid: false},
@@ -74,22 +80,63 @@ const SignupScreen = () => {
   const auth = useSelector(state => state.auth);
   const [state, dispatch] = useReducer(reducer, intialState);
   const [fnFocused, setfnFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [emFocused, setEmFocused] = useState(false);
   const [pass, setPass] = useState(false);
+  const [role, setRole] = useState('business');
+  const nav = useNavigation();
+
   const [confirmPass, setConfirmPassword] = useState(false);
+  const dispatchRedux = useDispatch();
   //   ^ - start of string
   // [a-zA-Z]{4,} - 4 or more ASCII letters
   // (?: [a-zA-Z]+){0,2} - 0 to 2 occurrences of a space followed with one or more ASCII letters
   // $ - end of string.
-  console.log(state);
-  const onSubmit = () => {
+
+  const onSubmit = async () => {
     if (!state.isAllValid.isValidAll) {
       Alert.alert('Account Registration', 'Enter a valid credentials', [
         {text: 'Try Again', onPress: () => console.log('OK Pressed')},
       ]);
     } else {
+      try {
+        setLoading(true);
+        const status = await dispatchRedux(
+          signUp(
+            state.name.fullname,
+            state.emailAddress.email,
+            state.password.pass,
+            role,
+          ),
+        );
+        console.log(status);
+        if (status) {
+          nav.navigate('HomeScreen');
+          setLoading(false);
+        }
+      } catch (err) {
+        let result = '';
+        // if (err.error) {
+        //   result = err.error;
+        // } else if (err.message) {
+        //   result = err.message;
+        // }
+        setLoading(false);
+        Alert.alert('Account Registration', err.message, [
+          {text: 'Try Again', onPress: () => console.log('OK Pressed')},
+        ]);
+      }
     }
   };
+  const pickerRef = useRef();
+
+  function open() {
+    pickerRef.current.focus();
+  }
+
+  function close() {
+    pickerRef.current.blur();
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -123,6 +170,16 @@ const SignupScreen = () => {
               ) : (
                 <Text></Text>
               )}
+            </View>
+            <View>
+              <Text style={styles.inputLabel}>Select an Role </Text>
+              <Picker
+                ref={pickerRef}
+                selectedValue={role}
+                onValueChange={(itemValue, itemIndex) => setRole(itemValue)}>
+                <Picker.Item label="Business" value="business" />
+                <Picker.Item label="Consumer" value="consumer" />
+              </Picker>
             </View>
             <View style={styles.inputBox}>
               <Text style={styles.inputLabel}>Phone Number</Text>
@@ -202,14 +259,25 @@ const SignupScreen = () => {
                 <Text></Text>
               )}
             </View>
-
+            {loading ? (
+              <ActivityIndicator size="large" color={color.primary} />
+            ) : (
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={() => {
+                  onSubmit();
+                }}>
+                <Text style={styles.loginButtonText}>Signup</Text>
+              </TouchableOpacity>
+            )}
+            {/* 
             <TouchableOpacity
               style={styles.loginButton}
               onPress={() => {
-                onSubmit();
+                nav.goBack();
               }}>
-              <Text style={styles.loginButtonText}>Signup</Text>
-            </TouchableOpacity>
+              <Text style={styles.loginButtonText}>Back</Text>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>

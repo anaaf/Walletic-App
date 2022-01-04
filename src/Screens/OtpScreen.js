@@ -127,7 +127,7 @@ const OtpScreen = () => {
               <Text> </Text>
             )} */}
 
-            <Button title="back" onPress={() => nav.goBack()} />
+            {/* <Button title="back" onPress={() => nav.goBack()} /> */}
           </ScrollView>
         </View>
       </View>
