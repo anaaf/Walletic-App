@@ -112,9 +112,9 @@ const SignInScreen = () => {
       }
     }
   };
-
+  // onPress={Keyboard.dismiss}
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <TouchableWithoutFeedback accessible={false}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.headerSection}>
@@ -132,7 +132,7 @@ const SignInScreen = () => {
               <Text style={styles.inputLabel}>Email/Phone Number</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter Email/Phone Number.."
+                placeholder="Enter Email/Phone Number i.e 3332176508"
                 keyboardType="email-address"
                 textContentType="name"
                 onChangeText={val => {
@@ -197,11 +197,12 @@ const SignInScreen = () => {
               </TouchableOpacity>
             </View> */}
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.loginButton}
-            onPress={() => nav.goBack()}>
+            onPress={() => nav.goBack()}
+            >
             <Text style={styles.loginButtonText}>Back</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </TouchableWithoutFeedback>

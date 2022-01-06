@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import {Text, View, ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
+import {dispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const SwicherScreen = () => {
   const nav = useNavigation();
+  console.log('swicher screen shown');
   AsyncStorage.getItem('user_data')
     .then(jsonValue => {
       if (jsonValue != null) {
@@ -19,7 +20,14 @@ const SwicherScreen = () => {
           //   console.log(futureExpTimeMs, '1');
           //   console.log(currentTimeMs, '2');
           if (futureExpTimeMs >= currentTimeMs) {
-            nav.navigate('HomeScreen');
+            //load data to reduxstore
+            dispatch({type: 'USER_AUTH_INFO', payload: jsonValue});
+            nav.push('HomeScreen');
+          } else {
+            nav.navigate('Auth');
+            AsyncStorage.clear().then(() => {
+              consle.log('storate cleared successfully');
+            });
           }
         } else {
           nav.navigate('Auth');

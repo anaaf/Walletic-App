@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useReducer} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
   Keyboard,
   Button,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 //import Icon from 'react-native-ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,11 +26,20 @@ import {verifyCode} from '../../actions/Auth';
 
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
+const intialState = {
+  message: '',
+};
+const reducer = (state, action) => {
+  if (action.type === 'ERROR_HANDLING') {
+    return {...state, message: action.payload};
+  }
+  return state;
+};
 
 const OtpScreen = () => {
   const [otp, setOpt] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [errorState, dispatchFunc] = useReducer(reducer, intialState);
   const nav = useNavigation();
   const state = useSelector(state => state.auth);
   console.log(state);
@@ -37,20 +47,32 @@ const OtpScreen = () => {
   const verifyOtp = async () => {
     try {
       setLoading(true);
-      await dispatch(verifyCode(otp));
-      setLoading(false);
+      const status = await dispatch(verifyCode(otp));
+      if (status) {
+        setLoading(false);
+        nav.navigate('SignUpScreen');
+      }
     } catch (err) {
-      console.log(err.message);
+      dispatchFunc({type: 'ERROR_HANDLING', payload: err.message});
     }
   };
   useEffect(() => {
-    if (state?.isNumberVerified) {
-      nav.navigate('SignUpScreen');
+    if (errorState.message) {
+      Alert.alert('Network Error', errorState.message, [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+      setLoading(false);
+      dispatchFunc({type: 'ERROR_HANDLING', payload: ''});
     }
-  }, [state?.isNumberVerified]);
-
+  });
+  // useEffect(() => {
+  //   if (state?.isNumberVerified) {
+  //     nav.navigate('SignUpScreen');
+  //   }
+  // }, [state?.isNumberVerified]);
+  // onPress={Keyboard.dismiss}
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <TouchableWithoutFeedback accessible={false}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Image

@@ -137,8 +137,9 @@ const SignupScreen = () => {
   function close() {
     pickerRef.current.blur();
   }
+  // onPress={Keyboard.dismiss}
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <TouchableWithoutFeedback accessible={false}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.headerSection}>

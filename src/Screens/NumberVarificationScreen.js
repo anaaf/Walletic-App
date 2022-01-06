@@ -77,8 +77,9 @@ const NumberVarificationScreen = () => {
       dispatchFunc({type: 'ERROR_HANDLING', payload: ''});
     }
   });
+  // onPress={Keyboard.dismiss}
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <TouchableWithoutFeedback accessible={false}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Image source={require('../images/logo1.png')} style={styles.logo} />
