@@ -25,7 +25,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 
 
 
-class App extends React.Component {
+export default class QRGeneratedScreen extends React.Component {
   qrData = JSON.stringify({
     orderID: "2000",
     walletID: "hsjay37",

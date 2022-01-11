@@ -1,6 +1,7 @@
 package com.walletice;
 
 import com.facebook.react.ReactActivity;
+import android.os.Bundle;
 
 public class MainActivity extends ReactActivity {
 
@@ -12,4 +13,11 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "Walletice";
   }
+
+  @Override
+  protected void onCreate(Bundle save) {
+      super.onCreate(null);
+  }
+
+
 }
