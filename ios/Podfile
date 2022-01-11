@@ -16,6 +16,8 @@ target 'Walletice' do
 
   pod 'RNCClipboard', :path => '../node_modules/@react-native-community/clipboard'
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
   target 'WalleticeTests' do
     inherit! :complete
     # Pods for testing
