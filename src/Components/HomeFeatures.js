@@ -3,10 +3,25 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import color from '../colors/colors';
+import { useNavigation } from '@react-navigation/native';
+import QrGeneration from '../Screens/QrGeneration'
 
 //<Icon color='#333' name='send' type='font-awesome' size={RFValue(40, 580)} color="white" padding={10} />
 
 const HomeFeatures = props => {
+
+  // hooks
+
+  const nav = useNavigation()
+
+ // Handler Functions
+  
+  const QrGenerationHandler = () => {
+    nav.navigate("QrGeneration")
+  }
+
+
+
   return (
     <View style={styles.container}>
       <View
@@ -45,6 +60,7 @@ const HomeFeatures = props => {
           </TouchableOpacity>
         </View>
       </View>
+     
       <View
         style={{
           flex: 1,
@@ -52,8 +68,11 @@ const HomeFeatures = props => {
           justifyContent: 'space-between',
         }}>
         <View style={styles.featureSubContainer}>
+
           <TouchableOpacity
-            style={{justifyContent: 'center', alignItems: 'center'}}>
+            style={{justifyContent: 'center', alignItems: 'center'}} 
+            onPress={QrGenerationHandler}
+            >
             <View style={styles.iconContainer}>
               <Icon
                 color="#333"
@@ -67,6 +86,7 @@ const HomeFeatures = props => {
             <Text style={styles.featureText}>Generate QR Code</Text>
           </TouchableOpacity>
         </View>
+
         <View style={styles.featureSubContainer}>
           <TouchableOpacity
             style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -82,6 +102,7 @@ const HomeFeatures = props => {
             </View>
             <Text style={styles.featureText}>Send Bills/invoices</Text>
           </TouchableOpacity>
+
         </View>
       </View>
     </View>
