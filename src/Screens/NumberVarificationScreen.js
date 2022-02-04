@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import color from '../colors/colors';
 import {useDispatch, useSelector} from 'react-redux';
-import {phoneVerfication} from '../redux/actions/AuthConstants';
+// import {phoneVerfication} from '../redux/actions/AuthConstants';
 import {verifyPhone} from '../redux/actions/Auth';
 import {set} from 'react-native-reanimated';
 const dew_Height = Dimensions.get('window').height;

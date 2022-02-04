@@ -7,7 +7,7 @@ import auth from './src/redux/reducers/Auth';
 import QrScannerReducer from './src/redux/reducers/QRScannerReducer'
 import {QrDataSaveReducer, modalReducer} from './src/redux/reducers/QRScannerReducer'
 import {combineReducers} from 'redux';
-import Navigation from './Navigation/Navigation';
+import Navigation from './src/Navigation/Navigation';
 import App1 from './App1';
 import store1 from './Playground/Redux/Store' // pg
 
