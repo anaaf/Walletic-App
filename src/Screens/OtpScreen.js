@@ -22,7 +22,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input';
 import color from '../colors/colors';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {verifyCode} from '../../actions/Auth';
+import {verifyCode} from '../redux/actions/Auth';
 
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;

@@ -23,7 +23,7 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import color from '../colors/colors';
 import {useSelector, useDispatch} from 'react-redux';
-import {signUp} from '../../actions/Auth';
+import {signUp} from '../redux/actions/Auth';
 import {isLogBoxErrorMessage} from 'react-native/Libraries/LogBox/Data/LogBoxData';
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;

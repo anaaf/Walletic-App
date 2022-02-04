@@ -1,7 +1,7 @@
 import React, {useState, useReducer} from 'react';
-import Regex from '../../Extras/Regex';
+import Regex from '../Extras/Regex';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, usesSelector} from 'react-redux';
 import {
   View,
   Text,
@@ -23,7 +23,7 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 //npm i react-native-otp-inputs
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import color from '../colors/colors';
-import {login} from '../../actions/Auth';
+import {login} from '../redux/actions/Auth';
 
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
