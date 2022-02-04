@@ -2,55 +2,61 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import { Rect } from 'react-native-svg';
 import React from 'react';
-import {View,  Text,  StyleSheet} from 'react-native'
+import {View,  Text,  StyleSheet, modal} from 'react-native'
+import {useSelector, useDispatch} from 'react-redux'
+import {onReadSuccess, QrDataSave, ModalToggle} from  '../redux/actions/QrActions' 
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
  
-export default class QRCodeScannerComp extends React.Component {
+   const QRCodeScannerScreen = () => { 
 
-    constructor(props) {
-        super(props)
-        this.topContent = this.topContent.bind(this)
-       this.state = {
-           isQrCode: false,
-           qrData: "",
-       }
-    }
+    const dispatch = useDispatch()
 
-    onSuccess = e => {
-        this.setState({
-            isQrCode : true,
-            data: e.data
-        })
-        console.log(e.data)
+    const nav = useNavigation();
+
+    const state = useSelector(state => state.QrScannerReducer );
+
+    // console.log(state.qrData)
+
+    const onSuccess = e => {
+      dispatch(onReadSuccess(e.data))
+      // setTimeout(() => {
+        // console.log("state", state)
+        nav.navigate("QrDataScreen");
+      // }, 1000)
       };
 
-      topContent() {
-        if(this.state.isQrCode) return (<Text>{this.state.qrData}</Text>) 
-        else 
-        return (
+
+
+      // Scanner screen styling and content, currently a placeholder
+
+    const topContent = () => {
+      state.qrCodeStatus == "success" ?  
+      (<Text>{state.qrCodeStatus}</Text>) :
             <Text style={styles.centerText}>
             Go to{' '}
             <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
             your computer and scan the QR code.
           </Text>
-          )
+          
       }
-
-    render() {
 
     
         return (
-          <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', padding: 10 }}>
+    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', padding: 10 }}>
      <QRCodeScanner
-        onRead={this.onSuccess}
+        reactivate={true}
+        reactivateTimeout={2000}
+        onRead={onSuccess}
         showMarker={true}
-        // flashMode={RNCamera.Constants.FlashMode.torch}
-        topContent={this.topContent()} />
-        
+        topContent={topContent()} />
           </View>
           
         );
       }
-    }
+
+
+    export default QRCodeScannerScreen;
 
 
     const styles = StyleSheet.create({
@@ -80,3 +86,24 @@ export default class QRCodeScannerComp extends React.Component {
           fontWeight: '700',
         },
       });
+
+
+      // axios({
+      //   method: 'post',
+      //   url: "http://34.239.113.17:3000/saveQrData/",
+      //   data:{
+      //     qrData: e.data,
+      //     qrStatus: "Success",
+      //     qrHeight: e.bounds.height,
+      //     qrWidth: e.bounds.width
+      //   }
+      // })
+      // .then(() => {
+      //   dispatch(QrDataSave("Data Saved Successfully"))
+      //   dispatch(ModalToggle())
+      //   nav.navigate("QrDataScreen")
+      // })
+      // .catch(err => {
+      //   console.log("error")
+      //   dispatch(QrDataSave("Failed to save data " + err))
+      // })
