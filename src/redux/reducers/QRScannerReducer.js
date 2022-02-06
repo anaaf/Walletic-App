@@ -7,7 +7,7 @@ const initialState = {
  
 const QRCodeScannerReducer = (state=initialState, action) => {
     switch(action.type) {   // can define multiple states
-        case 'success':
+        case 'qrReadSuccess':
             return {qrCodeStatus: 'success', qrData: action.payload};
         case 'timeout': 
             return {qrCodeStatus: 'timeout', qrData: action.payload};
