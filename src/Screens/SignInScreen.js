@@ -1,7 +1,7 @@
-import React, {useState, useReducer} from 'react';
+import React, { useState, useReducer } from 'react';
 import Regex from '../Extras/Regex';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, usesSelector} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   View,
   Text,
@@ -15,22 +15,25 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  BackHandler, 
+  
 } from 'react-native';
+import { useBackHandler, exitApp } from '@react-native-community/hooks'
 //import Icon from 'react-native-ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 //npm i react-native-otp-inputs
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import color from '../colors/colors';
-import {login} from '../redux/actions/Auth';
+import { login } from '../redux/actions/Auth';
 
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
 const intialState = {
-  username: {uname: '', isValid: false, isFocused: false},
-  password: {pass: '', isValid: false, isFocused: false},
-  isAllValid: {isValid: false, isFocused: false},
+  username: { uname: '', isValid: false, isFocused: false },
+  password: { pass: '', isValid: false, isFocused: false },
+  isAllValid: { isValid: false, isFocused: false },
 };
 const reducer = (state, action) => {
   if (action.type === 'USERNAME_STATE') {
@@ -46,22 +49,22 @@ const reducer = (state, action) => {
     }
     return {
       ...state,
-      username: {...state.username, uname: action.payload, isValid: isValid},
+      username: { ...state.username, uname: action.payload, isValid: isValid },
     };
   } else if (action.type === 'USERNAME_FOCUSED') {
-    return {...state, username: {...state.username, isFocused: true}};
+    return { ...state, username: { ...state.username, isFocused: true } };
   } else if (action.type === 'PASSWORD_VALIDATE') {
     // console.log(action.payload);
     const passwordRegex = Regex.passwordRegex;
     const isValid = passwordRegex.test(action.payload);
     return {
       ...state,
-      password: {...state.password, pass: action.payload, isValid},
+      password: { ...state.password, pass: action.payload, isValid },
     };
   } else if (action.type === 'PASSWORD_FOCUSED') {
     return {
       ...state,
-      password: {...state.password, isFocused: true},
+      password: { ...state.password, isFocused: true },
     };
   } else if (action.type === 'VALIDATE_ALL') {
     let isValid = true;
@@ -75,16 +78,16 @@ const reducer = (state, action) => {
       j++;
     }
     console.log(isValid, 'isValididity');
-    return {...state, isAllValid: {...state.isAllValid, isValid: isValid}};
+    return { ...state, isAllValid: { ...state.isAllValid, isValid: isValid } };
   }
   return state;
 };
-const SignInScreen = () => {
+const SignInScreen = (props) => {
   const dispatchRedux = useDispatch();
   const [loading, setLoading] = useState(false);
   const nav = useNavigation();
   const [state, dispatch] = useReducer(reducer, intialState);
-
+  const [passwordSecured, setPasswordSecured]=useState(true);
   console.log(state);
 
   const signIn = async () => {
@@ -92,7 +95,7 @@ const SignInScreen = () => {
       return Alert.alert(
         'Invalid Login Credentials',
         'Enter a valid Phone Number/Email and password',
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
       );
     } else {
       try {
@@ -107,12 +110,26 @@ const SignInScreen = () => {
       } catch (err) {
         setLoading(false);
         return Alert.alert('Login Failed!', err.message, [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
         ]);
       }
     }
   };
   // onPress={Keyboard.dismiss}
+  ///////////////////////Back handler to handler back button press///////////////////
+  const backActionHandler = () => {
+    Alert.alert('Are You Sure!', 'Do you want to exit App?', [
+        {
+            text: 'No',
+            onPress: () => null,
+            style: 'cancel',
+        },
+        { text: 'YES', onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+};
+useBackHandler(backActionHandler);
+//////////////////////////////////////////////////////////////////////////////////////////
   return (
     <TouchableWithoutFeedback accessible={false}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -122,28 +139,30 @@ const SignInScreen = () => {
               source={require('../images/signin.png')}
               style={styles.logo}
             />
-            <Text style={styles.welcomeText}>Welcome</Text>
+            <Text style={styles.welcomeText}>Sign In</Text>
           </View>
           <View style={styles.formContainer}>
-            <Text style={styles.loginTitleText}>Sign In</Text>
-            <View style={styles.hr}></View>
+           
 
             <View style={styles.inputBox}>
               <Text style={styles.inputLabel}>Email/Phone Number</Text>
+              <View style={styles.inputView}>
+                             <Icon color='#333' name='user' type='font-awesome' size={20}/>  
               <TextInput
                 style={styles.input}
-                placeholder="Enter Email/Phone Number i.e 3332176508"
+                placeholder="Enter Email/Phone"
                 keyboardType="email-address"
                 textContentType="name"
                 onChangeText={val => {
-                  dispatch({type: 'USERNAME_STATE', payload: val});
-                  dispatch({type: 'VALIDATE_ALL'});
+                  dispatch({ type: 'USERNAME_STATE', payload: val });
+                  dispatch({ type: 'VALIDATE_ALL' });
                 }}
-                onBlur={() => dispatch({type: 'USERNAME_FOCUSED'})}
+                onBlur={() => dispatch({ type: 'USERNAME_FOCUSED' })}
                 value={state.username.uname}
               />
+               </View>
               {!state.username.isValid && state.username.isFocused ? (
-                <Text style={{color: 'red'}}>
+                <Text style={styles.errorText}>
                   Your Email or Phone is Invalid{' '}
                 </Text>
               ) : (
@@ -153,9 +172,11 @@ const SignInScreen = () => {
 
             <View style={styles.inputBox}>
               <Text style={styles.inputLabel}>Password</Text>
+              <View style={styles.inputView}>
+                                <Icon color='#333' name='lock' type='font-awesome' size={20} />
               <TextInput
                 style={styles.input}
-                secureTextEntry={true}
+                secureTextEntry={passwordSecured}
                 placeholder="Enter Password.."
                 textContentType="password"
                 value={state.password.pass}
@@ -163,46 +184,64 @@ const SignInScreen = () => {
                 //   dispatch({type: 'PASSWORD_VALIDATE', payload: val})
                 // }
                 onChangeText={val => {
-                  dispatch({type: 'PASSWORD_VALIDATE', payload: val});
-                  dispatch({type: 'VALIDATE_ALL'});
+                  dispatch({ type: 'PASSWORD_VALIDATE', payload: val });
+                  dispatch({ type: 'VALIDATE_ALL' });
                 }}
-                onBlur={() => dispatch({type: 'PASSWORD_FOCUSED'})}
+                onBlur={() => dispatch({ type: 'PASSWORD_FOCUSED' })}
               />
-              {!state.password.isValid && state.password.isFocused ? (
-                <Text style={{color: 'red'}}>Your password is invalid</Text>
+             
+
+                           <TouchableOpacity 
+                                        //style={{marginRight:100}}
+                                         onPress={()=>{
+                                        setPasswordSecured(!passwordSecured);
+                                    }}>
+                                      <Icon name='eye' type='font-awesome-5' size={20} />
+
+                </TouchableOpacity>
+               
+            </View>
+            {!state.password.isValid && state.password.isFocused ? (
+                <Text style={styles.errorText}>Your password is invalid</Text>
               ) : (
                 <Text></Text>
               )}
             </View>
-            {loading ? (
-              <ActivityIndicator size="large" color={color.primary} />
-            ) : (
+            
               <TouchableOpacity
                 style={styles.loginButton}
                 onPress={() => signIn()}>
-                <Text style={styles.loginButtonText}>SIGN IN</Text>
+                  {loading ? (
+              <ActivityIndicator size="large" color="white" />
+            ) : (
+                <Text style={styles.loginButtonText}>Sign In</Text>
+                )}
               </TouchableOpacity>
-            )}
 
-            {/* <View style={{marginTop: 20}}>
-              <TouchableOpacity onPress={() => nav.navigate('SignUpScreen')}>
-                <Text
-                  style={{
-                    color: color.primary,
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                  }}>
-                  Create an Account?
-                </Text>
+
+
+
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+              <Text style={styles.forgetText}>Forgot Password?</Text>
+              <TouchableOpacity style={{ margin: 10 }}>
+
+                <Text style={styles.resetButtonText}>Rest Now</Text>
+
               </TouchableOpacity>
-            </View> */}
+            </View>
+
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', }}>
+              <Text style={styles.forgetText}>If account does not exist ?</Text>
+
+              <TouchableOpacity style={{ margin: 10 }} onPress={() => props.navigation.navigate('Auth')}>
+
+                <Text style={styles.resetButtonText}>Sign Up</Text>
+
+              </TouchableOpacity>
+            </View>
           </View>
-          {/* <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => nav.goBack()}
-            >
-            <Text style={styles.loginButtonText}>Back</Text>
-          </TouchableOpacity> */}
+
+
         </View>
       </ScrollView>
     </TouchableWithoutFeedback>
@@ -212,16 +251,22 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 4,
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+
   },
   headerSection: {
-    flex: 1,
-    position: 'relative',
+     flex: 2,
+    width: '100%',
+    height: '100%',
+    // position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 15,
+    paddingVertical:40,
     backgroundColor: color.primary,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 60,
+    borderBottomRightRadius: 60,
   },
 
   welcomeText: {
@@ -234,50 +279,101 @@ const styles = StyleSheet.create({
     flex: 3,
     backgroundColor: 'white',
     marginTop: 20,
-    margin: 20,
-    padding: 10,
+    margin: "3%",
+    height: '100%',
+    padding: "5%",
     borderRadius: 10,
   },
+
   loginTitleText: {
-    fontSize: RFValue(20, 580),
+    fontSize: RFValue(15, 580),
     color: 'black',
     fontWeight: 'bold',
     marginTop: 0,
+    marginLeft: 5
   },
+
 
   hr: {
     width: '100%',
     height: 0.5,
     backgroundColor: '#444',
-    marginTop: 6,
+    margin: 10,
   },
   inputBox: {
     marginTop: 10,
   },
   inputLabel: {
-    fontSize: RFValue(16, 580),
+    fontSize: RFValue(12, 580),
+    fontWeight: 'bold',
     marginBottom: 6,
     color: 'black',
+    marginLeft: 5
   },
   input: {
     width: '100%',
-    height: 40,
-    backgroundColor: '#dfe4ea',
-    borderRadius: 4,
-    paddingHorizontal: 10,
+    height: RFValue(45, 580),
+    fontSize: RFValue(10, 580),
+    paddingHorizontal: 15,
+    //borderWidth: 1,
+    backgroundColor: '#E1E1F5',
+    borderRadius: 30,
+    //paddingHorizontal: 10,
   },
   loginButton: {
     backgroundColor: color.primary,
+    height: RFValue(45, 580),
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
     marginTop: 20,
     paddingVertical: 10,
-    borderRadius: 4,
+    borderRadius: 30,
   },
   loginButtonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: RFValue(14, 580),
     fontWeight: 'bold',
   },
+  forgetText: {
+    fontSize: RFValue(12, 580),
+    alignSelf: 'center',
+    color: 'black',
+    fontWeight: '500'
+  },
+  resetButtonText: {
+    fontSize: RFValue(12, 580),
+    alignSelf: 'center',
+    color: color.primary,
+
+    fontWeight: 'bold'
+
+  },
+  errorText: {
+    color: 'red',
+    fontSize: RFValue(10, 580),
+    paddingLeft: 20
+  },
+
+
+  inputView:{
+    width: '100%',
+    height: RFValue(45, 580),
+    backgroundColor: '#E1E1F5',
+    paddingHorizontal: 25,
+   paddingRight:50,
+    //justifyContent: 'space-between',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    borderRadius: 30,
+   
+},
+
+
+
 });
 
 export default SignInScreen;
