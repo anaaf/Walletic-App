@@ -23,6 +23,7 @@ import color from '../colors/colors';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {verifyCode} from '../redux/actions/Auth';
+//import{ LottieView} from 'lottie-react-native';
 
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
@@ -36,7 +37,9 @@ const reducer = (state, action) => {
   return state;
 };
 
-const OtpScreen = () => {
+const OtpScreen = (props) => {
+  const phoneNumber= props.route.params.number;
+  
   const [otp, setOpt] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorState, dispatchFunc] = useReducer(reducer, intialState);
@@ -79,8 +82,10 @@ const OtpScreen = () => {
             source={require('../images/verified.png')}
             style={styles.logo}
           />
+
           <Text style={styles.OTPtext}>OTP Varification</Text>
           <Text style={styles.enterText}>Enter the OTP sent To</Text>
+          <Text style={styles.phoneNumberStyle}>(+92){phoneNumber}</Text>
         </View>
 
         <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -117,7 +122,7 @@ const OtpScreen = () => {
                     alignItems: 'center',
                     flexDirection: 'row',
                   }}>
-                  <Text style={styles.buttonText}>VERIFY</Text>
+                  <Text style={styles.buttonText}>Next</Text>
                   <Icon
                     name="arrow-right"
                     size={RFValue(18, 580)}
@@ -149,7 +154,26 @@ const OtpScreen = () => {
               <Text> </Text>
             )} */}
 
-            {/* <Button title="back" onPress={() => nav.goBack()} /> */}
+            {// <Button style={styles.goBackButton} title="Go back" onPress={() => nav.goBack()} style={styles.goBackButton} /> 
+            
+            
+            
+            <TouchableOpacity style={styles.goBackButton}  onPress={() => nav.goBack()}>
+            <View
+              style={{
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}>
+                 <Icon
+                name="arrow-left"
+                size={RFValue(18, 580)}
+                color="white"
+              />
+              <Text style={styles.buttonText}>Go Back</Text>
+             
+            </View>
+          </TouchableOpacity>}
           </ScrollView>
         </View>
       </View>
@@ -181,6 +205,14 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 
+  phoneNumberStyle:{
+    fontSize: RFValue(16, 580),
+    fontWeight: '800',
+    marginTop:5,
+    color: 'white',
+
+  },
+
   button: {
     justifyContent: 'center',
     alignSelf: 'center',
@@ -190,9 +222,10 @@ const styles = StyleSheet.create({
     //marginVertical:20,
     width: dew_Width / 1.2,
     borderRadius: 10,
+    height: RFValue(45, 580),
   },
   buttonText: {
-    fontSize: RFValue(20, 580),
+    fontSize: RFValue(14, 580),
     fontWeight: 'bold',
     color: 'white',
     marginVertical: 12,
@@ -231,6 +264,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'red',
   },
+  goBackButton:{
+
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+    backgroundColor: color.primary,
+    paddingHorizontal: 30,
+    //marginVertical:20,
+    width: dew_Width / 1.2,
+    borderRadius: 10,
+    height: RFValue(45, 580),
+    marginTop:20
+
+  },
+
+  
 });
 
 export default OtpScreen;

@@ -9,7 +9,7 @@ import {QrDataSaveReducer, modalReducer} from './src/redux/reducers/QRScannerRed
 import {combineReducers} from 'redux';
 import Navigation from './src/Navigation/Navigation';
 import App1 from './App1';
-import store1 from './Playground/Redux/Store' // pg
+//import store1 from './Playground/Redux/Store' // pg
 
 //combining the reducers
 const reducers = combineReducers({

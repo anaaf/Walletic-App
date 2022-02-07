@@ -23,7 +23,8 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import color from '../colors/colors';
 import {useSelector, useDispatch} from 'react-redux';
-import {signUp} from '../redux/actions/Auth';
+//import {signUp} from '../../actions/Auth';
+import {signUp} from '../redux/actions/Auth'
 import {isLogBoxErrorMessage} from 'react-native/Libraries/LogBox/Data/LogBoxData';
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
@@ -75,7 +76,7 @@ const reducer = (state, action) => {
   }
   return state;
 };
-const SignupScreen = () => {
+const SignupScreen = (props) => {
   // const state = useSelector(state => state.auth);
   const auth = useSelector(state => state.auth);
   const [state, dispatch] = useReducer(reducer, intialState);
@@ -147,11 +148,9 @@ const SignupScreen = () => {
               source={require('../images/signup.png')}
               style={styles.logo}
             />
-            <Text style={styles.welcomeText}>Welcome</Text>
+            <Text style={styles.welcomeText}>Sign Up</Text>
           </View>
           <View style={styles.formContainer}>
-            <Text style={styles.loginTitleText}>Sign Up</Text>
-            <View style={styles.hr}></View>
             <View style={styles.inputBox}>
               <Text style={styles.inputLabel}>Full Name (min 4 character)</Text>
               <TextInput
@@ -173,7 +172,7 @@ const SignupScreen = () => {
               )}
             </View>
             <View>
-              <Text style={styles.inputLabel}>Select an Role </Text>
+              <Text style={styles.inputLabel}>Select  Role </Text>
               <Picker
                 ref={pickerRef}
                 selectedValue={role}
@@ -260,17 +259,18 @@ const SignupScreen = () => {
                 <Text></Text>
               )}
             </View>
-            {loading ? (
-              <ActivityIndicator size="large" color={color.primary} />
-            ) : (
+           
               <TouchableOpacity
                 style={styles.loginButton}
                 onPress={() => {
                   onSubmit();
                 }}>
-                <Text style={styles.loginButtonText}>Signup</Text>
+                   {loading ? (
+              <ActivityIndicator size="large" color={color.primary} />
+            ) : (
+                <Text style={styles.loginButtonText}>Sign Up</Text>
+                )}
               </TouchableOpacity>
-            )}
             {/* 
             <TouchableOpacity
               style={styles.loginButton}
@@ -279,6 +279,14 @@ const SignupScreen = () => {
               }}>
               <Text style={styles.loginButtonText}>Back</Text>
             </TouchableOpacity> */}
+             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', marginTop: "5%" }}>
+              <Text style={styles.haveAccountText}>If already have an account?</Text>
+              <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+
+                <Text style={styles.loginText}>Login</Text>
+
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -287,19 +295,24 @@ const SignupScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 4,
-  },
-  headerSection: {
-    flex: 1,
-    position: 'relative',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 15,
-    backgroundColor: color.primary,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-  },
+  
+container: {
+  flex: 3,
+  flexDirection: 'column',
+  justifyContent: 'space-between'
+
+},
+headerSection: {
+  // flex: 1.2,
+  width: '100%',
+  // position: 'absolute',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingTop: 15,
+  backgroundColor: color.primary,
+  borderBottomLeftRadius: 60,
+  borderBottomRightRadius: 60,
+},
 
   welcomeText: {
     fontSize: RFValue(20, 580),
@@ -308,54 +321,80 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   formContainer: {
-    flex: 3,
+    flex: 2,
     backgroundColor: 'white',
     marginTop: 20,
     margin: 20,
-    padding: 10,
+    padding: "5%",
     borderRadius: 10,
   },
+  
   loginTitleText: {
-    fontSize: RFValue(20, 580),
+    fontSize: RFValue(15, 580),
     color: 'black',
     fontWeight: 'bold',
     marginTop: 0,
+    marginLeft:5
   },
 
   hr: {
     width: '100%',
     height: 0.5,
     backgroundColor: '#444',
-    marginTop: 6,
+    margin: 10,
   },
   inputBox: {
     marginTop: 10,
   },
   inputLabel: {
-    fontSize: RFValue(16, 580),
+    fontSize: RFValue(12, 580),
+    fontWeight: 'bold',
     marginBottom: 6,
     color: 'black',
+    marginLeft:5
   },
   input: {
     width: '100%',
-    height: 40,
-    borderWidth: 1,
-    backgroundColor: '#dfe4ea',
-    borderRadius: 4,
-    paddingHorizontal: 10,
+    height: RFValue(45, 580),
+    fontSize: RFValue(14, 580),
+    paddingHorizontal:30,
+    //borderWidth: 1,
+    backgroundColor: '#E1E1F5',
+    borderRadius: 30,
+    //paddingHorizontal: 10,
   },
   loginButton: {
     backgroundColor: color.primary,
-    marginTop: 20,
+    height: RFValue(45, 580),
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontSize: RFValue(10, 580),
     paddingVertical: 10,
-    borderRadius: 4,
+    borderRadius: 30,
   },
   loginButtonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 20,
+    alignSelf: 'center',
+    fontSize: RFValue(14, 580),
     fontWeight: 'bold',
   },
+  haveAccountText: {
+    fontSize: RFValue(12, 580),
+    color: 'black'
+  },
+  loginText: {
+    fontSize: RFValue(13, 580),
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+    color: 'green'
+  },
+
+
+
+
+
   error: {
     color: 'red',
   },

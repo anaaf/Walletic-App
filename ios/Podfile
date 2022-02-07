@@ -18,6 +18,8 @@ target 'Walletice' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
   target 'WalleticeTests' do
     inherit! :complete
     # Pods for testing
