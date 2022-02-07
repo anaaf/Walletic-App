@@ -32,51 +32,54 @@ import {
   TouchableOpacity,
   Image,
   Button,
-  BackHandler, 
-  Alert
+  BackHandler,
+  Alert,
 } from 'react-native';
 import color from '../../colors/colors';
 import Icon from 'react-native-ionicons';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import HomeFeatures from '../../Components/HomeFeatures';
-import { useBackHandler, exitApp } from '@react-native-community/hooks'
-
-
+import {useBackHandler, exitApp} from '@react-native-community/hooks';
 
 const HomeScreen = props => {
-
   // for testing purpose
 
-  const state = useSelector(state => state)
-  console.log(state)
+  const state = useSelector(state => state);
+  console.log(state);
 
-
-  // actual 
+  // actual
 
   const nav = useNavigation();
   const dispatch = useDispatch();
   const log_out = async () => {
     dispatch(logout());
     await AsyncStorage.clear();
-    nav.navigate('Login', {
-     // screen: 'PhoneScreen',
-    });
+    // nav.navigate('Login', {
+    //    screen: 'PhoneScreen',
+    // });
+    // setting a stack [auth]
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'Auth'}],
+      }),
+    );
   };
 
-   ///////////////////////Back handler to handler back button press///////////////////
-   const backActionHandler = () => {
+  ///////////////////////Back handler to handler back button press///////////////////
+  const backActionHandler = () => {
     Alert.alert('Are You Sure!', 'Do you want to exit App?', [
-        {
-            text: 'No',
-            onPress: () => null,
-            style: 'cancel',
-        },
-        { text: 'YES', onPress: () => BackHandler.exitApp() },
+      {
+        text: 'No',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      {text: 'YES', onPress: () => BackHandler.exitApp()},
     ]);
     return true;
-};
-useBackHandler(backActionHandler);
-//////////////////////////////////////////////////////////////////////////////////////////
+  };
+  useBackHandler(backActionHandler);
+  //////////////////////////////////////////////////////////////////////////////////////////
   return (
     <View style={styles.container}>
       {/* <Button onPress={log_out} title="logout" /> */}
@@ -99,7 +102,7 @@ useBackHandler(backActionHandler);
               style={styles.logo}
             />
 
-            <TouchableOpacity >
+            <TouchableOpacity>
               <Icon
                 color="#333"
                 name="notifications"
@@ -109,8 +112,6 @@ useBackHandler(backActionHandler);
                 padding={10}
               />
             </TouchableOpacity>
-
-
 
             <TouchableOpacity onPress={log_out}>
               <Icon
@@ -161,90 +162,77 @@ useBackHandler(backActionHandler);
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: '#F5F8F8'
-
-},
-header: {
+    backgroundColor: '#F5F8F8',
+  },
+  header: {
     flex: 2,
     backgroundColor: color.primary,
     borderBottomEndRadius: 20,
-    borderBottomLeftRadius: 20
-
-},
-topMenuContainer: {
+    borderBottomLeftRadius: 20,
+  },
+  topMenuContainer: {
     flex: 1,
     flexDirection: 'row',
     //backgroundColor: "pink",
     justifyContent: 'space-between',
     margin: 20,
-
-},
-blanceContainer: {
+  },
+  blanceContainer: {
     flex: 2,
-    backgroundColor: "#8e00eb",
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
+    backgroundColor: '#8e00eb',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
 
     shadowColor: 'white',
     shadowOffset: {
-        width: 4,
-        height: 5,
+      width: 4,
+      height: 5,
     },
     shadowOpacity: 0.25,
     shadowRadius: 6.54,
 
     elevation: 1,
-
-
-},
-blanceSubContainer: {
+  },
+  blanceSubContainer: {
     // backgroundColor: 'blue',
     margin: 20,
-
-},
-featuresContainer: {
+  },
+  featuresContainer: {
     flex: 4,
-      flexDirection: 'row',
+    flexDirection: 'row',
     //  backgroundColor: 'white',
-
-
-},
-logo: {
+  },
+  logo: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-
-},
-blanceText: {
+  },
+  blanceText: {
     fontSize: 16,
     fontWeight: '800',
     color: '#C8C8C8',
-
-},
-totalAmount: {
+  },
+  totalAmount: {
     fontSize: RFValue(20, 580),
     color: 'white',
     marginTop: 20,
-    fontWeight: '900'
-
-},
-addContainer: {
+    fontWeight: '900',
+  },
+  addContainer: {
     backgroundColor: '#F99815',
-    borderTopRightRadius:30,
+    borderTopRightRadius: 30,
     justifyContent: 'center',
     width: '20%',
-    alignItems: "center",
+    alignItems: 'center',
+  },
 
-   
-},
-
-logo: {
+  logo: {
     width: '70%',
     height: '80%',
-},
+  },
 });
 
 export default HomeScreen;
