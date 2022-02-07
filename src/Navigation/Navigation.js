@@ -17,6 +17,7 @@ import UserAccountScreen from '../Screens/App/UserAccountScreen';
 import QrDataScreen from '../Screens/QrDataScreen'
 import QrErrorScreen from '../Screens/QrFailure'
 import QrGeneration from '../Screens/QrGeneration'
+import QrDataForm from '../Screens/QrGenerationDataForm'
 import color from '../colors/colors';
 import TransferFormScreen from '../Screens/TransferFormScreen';
 
@@ -120,9 +121,10 @@ const MainContainer = () => {
       <Stack.Screen name="transferForm"  component={TransferFormScreen}/>
       <Stack.Screen name = "QrDataScreen" component={QrDataScreen} />
       <Stack.Screen name="QrFailure" component={QrErrorScreen} />
+      <Stack.Screen name="QrDataForm" component = {QrDataForm} />
       <Stack.Screen name="QrGeneration" component = {QrGeneration} />
+      <Stack.Screen name="Auth" component={AuthNavigator} />
         <Stack.Screen name="Switch" component={SwicherScreen} />
-        <Stack.Screen name="Auth" component={AuthNavigator} />
         <Stack.Screen name="Login" component={LoginNavigator} />
         {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
        

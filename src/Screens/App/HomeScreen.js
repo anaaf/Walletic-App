@@ -41,7 +41,18 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import HomeFeatures from '../../Components/HomeFeatures';
 import { useBackHandler, exitApp } from '@react-native-community/hooks'
 
+
+
 const HomeScreen = props => {
+
+  // for testing purpose
+
+  const state = useSelector(state => state)
+  console.log(state)
+
+
+  // actual 
+
   const nav = useNavigation();
   const dispatch = useDispatch();
   const log_out = async () => {

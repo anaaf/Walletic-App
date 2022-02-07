@@ -1,6 +1,6 @@
 export const onReadSuccess = (data) => {
     return {
-        type: 'success',
+        type: 'qrReadSuccess',
         payload: data,
     }
 }
@@ -8,6 +8,13 @@ export const onReadSuccess = (data) => {
 export const timeout = (data = "") => {
     return {
         type: 'timeout',
+        payload: data
+    }
+}
+
+export const qrDataFormCreate = (data) => {
+    return {
+        type:"qrDataSuccess",
         payload: data
     }
 }

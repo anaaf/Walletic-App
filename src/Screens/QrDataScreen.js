@@ -17,8 +17,10 @@ const QrDataScreen = () => {
     return (
         <View style = {styles.main}>
             <View style= {styles.details}>
-                <Text> Order Id:  {data.orderID}</Text>
-                <Text> Wallet Id:  {data.walletID}</Text>
+                <Text>Your ID: {data.senderID}</Text>
+                <Text>Reciever ID: {data.recieverID}</Text>
+                <Text> Order ID:  {data.orderID}</Text>
+                <Text> Wallet ID:  {data.walletID}</Text>
                 <Text> Invoice Amount: {data.invoiceAmount}</Text>
             </View>
             <View style= {styles.btnView}>
