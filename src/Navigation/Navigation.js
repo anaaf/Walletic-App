@@ -14,13 +14,12 @@ import SwicherScreen from '../Screens/SwicherScreen';
 import HomeScreen from '../Screens/App/HomeScreen';
 import QrScanner from '../Screens/QrScanner';
 import UserAccountScreen from '../Screens/App/UserAccountScreen';
-import QrDataScreen from '../Screens/QrDataScreen'
-import QrErrorScreen from '../Screens/QrFailure'
-import QrGeneration from '../Screens/QrGeneration'
-import QrDataForm from '../Screens/QrGenerationDataForm'
+import QrDataScreen from '../Screens/QrDataScreen';
+import QrErrorScreen from '../Screens/QrFailure';
+import QrGeneration from '../Screens/QrGeneration';
+import QrDataForm from '../Screens/QrGenerationDataForm';
 import color from '../colors/colors';
 import TransferFormScreen from '../Screens/TransferFormScreen';
-
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,36 +27,34 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-    tabBarOptions={{
-      labelPosition: 'below-icon',
-      activeTintColor: '#7ADAE0',
-  
-    
-      inactiveTintColor: 'white',
-      style: {
+      tabBarOptions={{
+        labelPosition: 'below-icon',
+        activeTintColor: '#7ADAE0',
+
+        inactiveTintColor: 'white',
+        style: {
           // Remove border top on both android & ios
           borderTopWidth: 0,
-          borderTopColor: "transparent",
+          borderTopColor: 'transparent',
           backgroundColor: color.primary,
           elevation: 0,
-          borderTopLeftRadius:20,
+          borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           shadowColor: '#5bc4ff',
           shadowOpacity: 0,
-        
+
           shadowOffset: {
-              height: 0,
+            height: 0,
           },
           shadowRadius: 0,
-      },
-      tabStyle: {
+        },
+        tabStyle: {
           //backgroundColor:  '#FBF7F5',
-      },
-      labelStyle: {
+        },
+        labelStyle: {
           fontWeight: 'bold',
           fontSize: 11,
-         
-      },
+        },
       }}>
       <Tab.Screen
         name="Home"
@@ -68,7 +65,6 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
-
 
       <Tab.Screen
         name="Scanner"
@@ -117,17 +113,16 @@ const MainContainer = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="HomeScreen" component={BottomTabNavigator} />
-      <Stack.Screen name="transferForm"  component={TransferFormScreen}/>
-      <Stack.Screen name = "QrDataScreen" component={QrDataScreen} />
-      <Stack.Screen name="QrFailure" component={QrErrorScreen} />
-      <Stack.Screen name="QrDataForm" component = {QrDataForm} />
-      <Stack.Screen name="QrGeneration" component = {QrGeneration} />
-      <Stack.Screen name="Auth" component={AuthNavigator} />
         <Stack.Screen name="Switch" component={SwicherScreen} />
+        <Stack.Screen name="Auth" component={AuthNavigator} />
+        <Stack.Screen name="HomeScreen" component={BottomTabNavigator} />
+        <Stack.Screen name="transferForm" component={TransferFormScreen} />
+        <Stack.Screen name="QrDataScreen" component={QrDataScreen} />
+        <Stack.Screen name="QrFailure" component={QrErrorScreen} />
+        <Stack.Screen name="QrDataForm" component={QrDataForm} />
+        <Stack.Screen name="QrGeneration" component={QrGeneration} />
         <Stack.Screen name="Login" component={LoginNavigator} />
         {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
-       
       </Stack.Navigator>
     </NavigationContainer>
   );

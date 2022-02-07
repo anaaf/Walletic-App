@@ -36,6 +36,7 @@ import {
   Alert,
 } from 'react-native';
 import color from '../../colors/colors';
+import {CommonActions} from '@react-navigation/native';
 import Icon from 'react-native-ionicons';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import HomeFeatures from '../../Components/HomeFeatures';
@@ -58,7 +59,7 @@ const HomeScreen = props => {
     //    screen: 'PhoneScreen',
     // });
     // setting a stack [auth]
-    navigation.dispatch(
+    props.navigation.dispatch(
       CommonActions.reset({
         index: 0,
         routes: [{name: 'Auth'}],
