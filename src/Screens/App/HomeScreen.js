@@ -36,36 +36,51 @@ import {
   Alert
 } from 'react-native';
 import color from '../../colors/colors';
+import {CommonActions} from '@react-navigation/native';
 import Icon from 'react-native-ionicons';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import HomeFeatures from '../../Components/HomeFeatures';
 import { useBackHandler, exitApp } from '@react-native-community/hooks'
 
 const HomeScreen = props => {
+  // for testing purpose
+
+  const state = useSelector(state => state);
+  console.log(state);
+
+  // actual
+
   const nav = useNavigation();
   const dispatch = useDispatch();
   const log_out = async () => {
     dispatch(logout());
     await AsyncStorage.clear();
-    nav.navigate('Login', {
-     // screen: 'PhoneScreen',
-    });
+    // nav.navigate('Login', {
+    //    screen: 'PhoneScreen',
+    // });
+    // setting a stack [auth]
+    props.navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'Auth'}],
+      }),
+    );
   };
 
-   ///////////////////////Back handler to handler back button press///////////////////
-   const backActionHandler = () => {
+  ///////////////////////Back handler to handler back button press///////////////////
+  const backActionHandler = () => {
     Alert.alert('Are You Sure!', 'Do you want to exit App?', [
-        {
-            text: 'No',
-            onPress: () => null,
-            style: 'cancel',
-        },
-        { text: 'YES', onPress: () => BackHandler.exitApp() },
+      {
+        text: 'No',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      {text: 'YES', onPress: () => BackHandler.exitApp()},
     ]);
     return true;
-};
-useBackHandler(backActionHandler);
-//////////////////////////////////////////////////////////////////////////////////////////
+  };
+  useBackHandler(backActionHandler);
+  //////////////////////////////////////////////////////////////////////////////////////////
   return (
     <View style={styles.container}>
       {/* <Button onPress={log_out} title="logout" /> */}
@@ -198,12 +213,10 @@ blanceSubContainer: {
 },
 featuresContainer: {
     flex: 4,
-      flexDirection: 'row',
+    flexDirection: 'row',
     //  backgroundColor: 'white',
-
-
-},
-logo: {
+  },
+  logo: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',

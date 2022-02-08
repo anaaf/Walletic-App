@@ -30,6 +30,9 @@ const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
 const data = ['business, consumer'];
 
+
+// local state for the component
+
 const intialState = {
   name: {fullname: '', isValid: false},
   emailAddress: {email: '', isValid: false},
@@ -38,10 +41,13 @@ const intialState = {
   isAllValid: {isValidAll: false},
 };
 
+
+// local state and not a redux reducer but a react useReducer used for local state management
+
 const reducer = (state, action) => {
   if (action.type === 'FULL_NAME') {
     const exp = /^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$/;
-    const isValid = exp.test(action.payload);
+    const isValid = exp.test(action.payload );
     return {...state, name: {fullname: action.payload, isValid: isValid}};
   }
   if (action.type === 'VALIDATE_EMAIL') {
@@ -129,6 +135,8 @@ const SignupScreen = (props) => {
       }
     }
   };
+
+
   const pickerRef = useRef();
 
   function open() {
@@ -138,7 +146,8 @@ const SignupScreen = (props) => {
   function close() {
     pickerRef.current.blur();
   }
-  // onPress={Keyboard.dismiss}
+
+
   return (
     <TouchableWithoutFeedback accessible={false}>
       <ScrollView showsVerticalScrollIndicator={false}>

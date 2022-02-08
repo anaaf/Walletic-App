@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import auth from './src/redux/reducers/Auth';
 import QrScannerReducer from './src/redux/reducers/QRScannerReducer'
 import {QrDataSaveReducer, modalReducer} from './src/redux/reducers/QRScannerReducer'
+import {QRCodeGenerationReducer} from './src/redux/reducers/QrGenerationReducer'
 import {combineReducers} from 'redux';
 import Navigation from './src/Navigation/Navigation';
 import App1 from './App1';
@@ -17,13 +18,12 @@ const reducers = combineReducers({
   auth,
   QrScannerReducer, 
   QrDataSaveReducer,
-  modalReducer
+  modalReducer,
+  QRCodeGenerationReducer
 });
 const store = createStore(reducers, applyMiddleware(thunk));
 
 export default function App() {
-
-
 
   return (
     <Provider store={store}>
@@ -32,4 +32,5 @@ export default function App() {
      
     </Provider>
   );
+
 }

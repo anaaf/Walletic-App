@@ -5,6 +5,7 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import color from '../colors/colors';
 import { useNavigation } from '@react-navigation/native';
 import QrGeneration from '../Screens/QrGeneration'
+import QrGenerationForm from "../Screens/QrGenerationDataForm"
 
 //<Icon color='#333' name='send' type='font-awesome' size={RFValue(40, 580)} color="white" padding={10} />
 
@@ -17,7 +18,7 @@ const HomeFeatures = props => {
  // Handler Functions
   
   const QrGenerationHandler = () => {
-    nav.navigate("QrGeneration")
+    nav.navigate("QrDataForm")
   }
 
 

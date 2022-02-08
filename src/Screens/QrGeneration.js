@@ -11,48 +11,44 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
+import Share from 'react-native-share';
 import QRCode from 'react-native-qrcode-svg';
-// import QRCodeScanner from 'react-native-qrcode-scanner';
-// import { RNCamera } from 'react-native-camera';
+import {useSelector, useDispatch} from 'react-redux';
 
 
 
-class App extends React.Component {
-  qrData = JSON.stringify({
-    orderID: "2000",
-    walletID: "hsjay37",
-    invoiceAmount: 1500
-  }) 
+const App = () => {
 
+  Share.open(options)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    err && console.log(err);
+  });
+ 
+ const qrDataState = useSelector(state => state.QRCodeGenerationReducer.orderDetails)
 
-  render() {
+ console.log(qrDataState)
 
+ const qrData = JSON.stringify(JSON.stringify(qrDataState)) 
     
     return (
       <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', padding: 10 }}>
-        <View style={{...styles.qrCodeStyle, ...styles.header}}> 
-          <Text style={styles.sectionTitle}>Scan QRCode and Pay</Text> 
-        </View>
-        <View style = {styles.qrCodeStyle}>
-          <QRCode 
-          value= {JSON.stringify(this.qrData)}
-          size={300}
-          />
-        </View>
+          <View style={{...styles.qrCodeStyle, ...styles.header}}> 
+            <Text style={styles.sectionTitle}>Scan QRCode and Pay</Text> 
+          </View>
+          <View style = {styles.qrCodeStyle}>
+            <QRCode 
+            value= {qrData}
+            size={300}
+            />
+          </View>
       
 
       </View>
       
     );
-  }
 }
 
 

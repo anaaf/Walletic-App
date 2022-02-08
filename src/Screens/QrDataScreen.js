@@ -32,6 +32,8 @@ const QrDataScreen = (props) => {
                 <Text  style={styles.text}>{data.walletID}</Text>
                 <Text style={styles.inputLabel}>Invoice Amount</Text>
                 <Text  style={styles.text}>{data.invoiceAmount}</Text>
+                <Text style={styles.inputLabel}>Reciever Account</Text>
+                <Text  style={styles.text}>{data.recieverID}</Text>
             </View>
             <View style= {styles.btnView}>
                 

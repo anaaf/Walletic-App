@@ -14,9 +14,10 @@ import SwicherScreen from '../Screens/SwicherScreen';
 import HomeScreen from '../Screens/App/HomeScreen';
 import QrScanner from '../Screens/QrScanner';
 import UserAccountScreen from '../Screens/App/UserAccountScreen';
-import QrDataScreen from '../Screens/QrDataScreen'
-import QrErrorScreen from '../Screens/QrFailure'
-import QrGeneration from '../Screens/QrGeneration'
+import QrDataScreen from '../Screens/QrDataScreen';
+import QrErrorScreen from '../Screens/QrFailure';
+import QrGeneration from '../Screens/QrGeneration';
+import QrDataForm from '../Screens/QrGenerationDataForm';
 import color from '../colors/colors';
 import TransferFormScreen from '../Screens/TransferFormScreen';
 import NotificationsScreen from '../Screens/App/NotificationsScreen';
@@ -117,17 +118,17 @@ const MainContainer = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="HomeScreen" component={BottomTabNavigator} />
-      <Stack.Screen name="transferForm"  component={TransferFormScreen}/>
-      <Stack.Screen name='notifications' component={NotificationsScreen}/>
-      <Stack.Screen name = "QrDataScreen" component={QrDataScreen} />
-      <Stack.Screen name="QrFailure" component={QrErrorScreen} />
-      <Stack.Screen name="QrGeneration" component = {QrGeneration} />
         <Stack.Screen name="Switch" component={SwicherScreen} />
         <Stack.Screen name="Auth" component={AuthNavigator} />
+        <Stack.Screen name="HomeScreen" component={BottomTabNavigator} />
+        <Stack.Screen name="transferForm" component={TransferFormScreen} />
+        <Stack.Screen name='notifications' component={NotificationsScreen}/>
+        <Stack.Screen name="QrDataScreen" component={QrDataScreen} />
+        <Stack.Screen name="QrFailure" component={QrErrorScreen} />
+        <Stack.Screen name="QrDataForm" component={QrDataForm} />
+        <Stack.Screen name="QrGeneration" component={QrGeneration} />
         <Stack.Screen name="Login" component={LoginNavigator} />
         {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
-       
       </Stack.Navigator>
     </NavigationContainer>
   );
