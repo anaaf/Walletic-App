@@ -32,11 +32,14 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  BackHandler, 
+  Alert
 } from 'react-native';
 import color from '../../colors/colors';
 import Icon from 'react-native-ionicons';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import HomeFeatures from '../../Components/HomeFeatures';
+import { useBackHandler, exitApp } from '@react-native-community/hooks'
 
 const HomeScreen = props => {
   const nav = useNavigation();
@@ -44,10 +47,25 @@ const HomeScreen = props => {
   const log_out = async () => {
     dispatch(logout());
     await AsyncStorage.clear();
-    nav.navigate('Auth', {
-      screen: 'PhoneScreen',
+    nav.navigate('Login', {
+     // screen: 'PhoneScreen',
     });
   };
+
+   ///////////////////////Back handler to handler back button press///////////////////
+   const backActionHandler = () => {
+    Alert.alert('Are You Sure!', 'Do you want to exit App?', [
+        {
+            text: 'No',
+            onPress: () => null,
+            style: 'cancel',
+        },
+        { text: 'YES', onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+};
+useBackHandler(backActionHandler);
+//////////////////////////////////////////////////////////////////////////////////////////
   return (
     <View style={styles.container}>
       {/* <Button onPress={log_out} title="logout" /> */}
@@ -59,7 +77,7 @@ const HomeScreen = props => {
                 color="#333"
                 name="menu"
                 type="font-awesome"
-                size={30}
+                size={RFValue(20, 580)}
                 color="white"
                 padding={10}
               />
@@ -69,12 +87,26 @@ const HomeScreen = props => {
               // source={require('../../images/send.png')}
               style={styles.logo}
             />
+
+            <TouchableOpacity onPress={()=>props.navigation.navigate('notifications')} >
+              <Icon
+                color="#333"
+                name="notifications"
+                type="font-awesome"
+                size={RFValue(20, 580)}
+                color="white"
+                padding={10}
+              />
+            </TouchableOpacity>
+
+
+
             <TouchableOpacity onPress={log_out}>
               <Icon
                 color="#333"
                 name="log-out"
                 type="font-awesome"
-                size={30}
+                size={RFValue(20, 580)}
                 color="white"
                 padding={10}
               />
@@ -83,7 +115,8 @@ const HomeScreen = props => {
           <View style={styles.blanceContainer}>
             <View style={styles.blanceSubContainer}>
               <Text style={styles.blanceText}>Balance</Text>
-              <Text style={styles.totalAmount}>$ 129343343.007</Text>
+              <Text style={styles.totalAmount}>Rs 129343343.54</Text>
+              
             </View>
             <View style={styles.addContainer}>
               <TouchableOpacity
@@ -118,64 +151,99 @@ const HomeScreen = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: '#F5F8F8',
-  },
-  header: {
+    backgroundColor: '#F5F8F8'
+
+},
+header: {
     flex: 2,
     backgroundColor: color.primary,
     borderBottomEndRadius: 20,
-    borderBottomLeftRadius: 20,
-  },
-  topMenuContainer: {
+    borderBottomLeftRadius: 20
+
+},
+topMenuContainer: {
     flex: 1,
     flexDirection: 'row',
     //backgroundColor: "pink",
     justifyContent: 'space-between',
     margin: 20,
-  },
-  blanceContainer: {
+
+},
+blanceContainer: {
     flex: 2,
-    backgroundColor: '#8e00eb',
+    backgroundColor: "#8e00eb",
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-  },
-  blanceSubContainer: {
+   // width: "90%",
+    shadowColor: 'white',
+    shadowOffset: {
+        width: 4,
+        height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 6.54,
+
+    elevation: 1,
+
+
+},
+blanceSubContainer: {
     // backgroundColor: 'blue',
     margin: 20,
-  },
-  featuresContainer: {
+    width: '70%'
+
+},
+featuresContainer: {
     flex: 4,
-    //  flexDirection: 'row'
-    //  backgroundColor: 'gray',
-  },
-  logo: {
+      flexDirection: 'row',
+    //  backgroundColor: 'white',
+
+
+},
+logo: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-  },
-  blanceText: {
+   
+
+},
+blanceText: {
     fontSize: 16,
     fontWeight: '800',
     color: '#C8C8C8',
-  },
-  totalAmount: {
-    fontSize: RFValue(20, 580),
+
+},
+totalAmount: {
+    fontSize: RFValue(18, 580),
     color: 'white',
     marginTop: 20,
     fontWeight: '900',
-  },
-  addContainer: {
+   // width: "70%"
+
+},
+addContainer: {
     backgroundColor: '#F99815',
+    borderTopRightRadius:30,
     justifyContent: 'center',
     width: '20%',
-    alignItems: 'center',
-  },
+    alignItems: "center",
 
-  logo: {
+   
+},
+
+logo: {
     width: '70%',
     height: '80%',
-  },
+},
+userName:{
+  fontSize: RFValue(16, 580),
+  color: 'white',
+ // width: "80%",
+  marginVertical:5
+}
 });
 
 export default HomeScreen;

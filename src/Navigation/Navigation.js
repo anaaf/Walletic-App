@@ -18,6 +18,8 @@ import QrDataScreen from '../Screens/QrDataScreen'
 import QrErrorScreen from '../Screens/QrFailure'
 import QrGeneration from '../Screens/QrGeneration'
 import color from '../colors/colors';
+import TransferFormScreen from '../Screens/TransferFormScreen';
+import NotificationsScreen from '../Screens/App/NotificationsScreen';
 
 
 const Stack = createStackNavigator();
@@ -26,31 +28,36 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        labelPosition: 'below-icon',
-        activeTintColor: 'tomato',
-
-        inactiveTintColor: color.primary,
-        style: {
+    tabBarOptions={{
+      labelPosition: 'below-icon',
+      activeTintColor: '#7ADAE0',
+  
+    
+      inactiveTintColor: 'white',
+      style: {
           // Remove border top on both android & ios
           borderTopWidth: 0,
-          borderTopColor: 'transparent',
+          borderTopColor: "transparent",
+          backgroundColor: color.primary,
           elevation: 0,
+          borderTopLeftRadius:20,
+          borderTopRightRadius: 20,
           shadowColor: '#5bc4ff',
           shadowOpacity: 0,
-
+        
           shadowOffset: {
-            height: 0,
+              height: 0,
           },
           shadowRadius: 0,
-        },
-        tabStyle: {
-          // backgroundColor: '#FBF7F5',
-        },
-        labelStyle: {
+      },
+      tabStyle: {
+          //backgroundColor:  '#FBF7F5',
+      },
+      labelStyle: {
           fontWeight: 'bold',
           fontSize: 11,
-        },
+         
+      },
       }}>
       <Tab.Screen
         name="Home"
@@ -61,6 +68,7 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
+
 
       <Tab.Screen
         name="Scanner"
@@ -110,6 +118,8 @@ const MainContainer = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="HomeScreen" component={BottomTabNavigator} />
+      <Stack.Screen name="transferForm"  component={TransferFormScreen}/>
+      <Stack.Screen name='notifications' component={NotificationsScreen}/>
       <Stack.Screen name = "QrDataScreen" component={QrDataScreen} />
       <Stack.Screen name="QrFailure" component={QrErrorScreen} />
       <Stack.Screen name="QrGeneration" component = {QrGeneration} />
