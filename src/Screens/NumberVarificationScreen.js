@@ -27,6 +27,7 @@ import {verifyPhone} from '../redux/actions/Auth';
 import {set} from 'react-native-reanimated';
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
+import {baseUrl} from '../Api/BaseUrl'
 
 const intialState = {
   message: '',
@@ -97,6 +98,10 @@ const NumberVarificationScreen = (props) => {
 };
 useBackHandler(backActionHandler);
 ////////////////////////////////////////////////////////////////////////////
+useEffect(()=>{
+  fetch(baseUrl).then(data=> data.json()).then(value=>console.log(value))
+
+})
   return (
     <TouchableWithoutFeedback accessible={false}>
       <View style={styles.container}>
@@ -116,7 +121,7 @@ useBackHandler(backActionHandler);
               placeholder={'3XX-XXXXXXX'}
               required
               autoFocus={true}
-              placeholderTextColor="#D5D5D5"
+              placeholderTextColor="gray"
               style={styles.input}
               value={phoneNo}
               onChangeText={setPhoneNo}
@@ -143,7 +148,7 @@ useBackHandler(backActionHandler);
                   )}
                 </View>
               </TouchableOpacity>
-            <Text style={styles.haveAccountText}>If allready have an account ?</Text>
+            <Text style={styles.haveAccountText}>If already have an account ?</Text>
             <TouchableOpacity
               style={{...styles.button}}
               onPress={() => nav.navigate('Login')}>
@@ -171,18 +176,27 @@ useBackHandler(backActionHandler);
 const styles = StyleSheet.create({
   container: {
     flex: 3,
+    backgroundColor:'white',
+    
   },
   header: {
-    flex: 1,
+   
     backgroundColor: color.primary,
     justifyContent: 'center',
+    textAlign: 'center',
     alignItems: 'center',
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    alignContent: 'center',
+    flexDirection: 'row',
+     borderBottomLeftRadius:30,
+     borderBottomRightRadius:30,
+    
+
   },
   logo: {
-    width: '80%',
-    height: '70%',
+    width: '50%',
+    minHeight: '20%',  
+    paddingVertical:30,
+    height: '50%',
   },
   getText: {
     fontSize: RFValue(25, 580),
@@ -193,30 +207,26 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: RFValue(13, 580),
-    color: 'gray',
+    color: 'black',
     fontWeight: '700',
     textAlign: 'center',
   },
   input: {
-    //justifyContent: 'center',
-   // alignSelf: 'center',
-    //alignContent: 'center',
-   // alignItems: 'center',
-    //textAlign: 'center',
-    width: '60%',
+   
+    width: '90%',
     height: RFValue(45, 580),
-    fontSize: RFValue(10, 580),
     paddingHorizontal:30,
-    //borderWidth: 1,
+  
     backgroundColor: '#E1E1F5',
     borderRadius: 30,
     fontSize: RFValue(20, 580),
     alignSelf: 'center',
-    //textAlign: 'center',
+    textAlign:'center',
+  
     color: 'black',
     borderWidth: 0.5,
     marginVertical:10,
-   // paddingHorizontal: 10,
+  
   },
 
   button: {
@@ -224,7 +234,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     backgroundColor: color.primary,
-    width: '60%',
+    width: '90%',
     height: RFValue(45, 580),
     alignItems: 'center',
     justifyContent: 'center',
@@ -245,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12, 580),
     fontWeight:'bold',
     paddingTop:20,
-    color: 'gray',
+    color: 'black',
     alignSelf: 'center'
   }
 });

@@ -21,9 +21,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import {signUp} from '../redux/actions/Auth';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {qrDataFormCreate} from "../redux/actions/QrActions"
+import Icon from "react-native-ionicons";
 
-
-const QrDataForm = () => {
+const QrDataForm = (props) => {
 
 
     const dataObj2 = {
@@ -47,6 +47,7 @@ const QrDataForm = () => {
     // to store phone number as wallet id in qrGeneration
 
     const {phoneNumber} = useSelector(state => state.auth)
+ 
 
 
     const onSubmit = () => {
@@ -69,21 +70,27 @@ const QrDataForm = () => {
 
     return (
     
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-              <View style={styles.headerSection}>
-                <Image
-                  source={require('../images/signup.png')}
-                  style={styles.logo}
-                />
-                <Text style={styles.welcomeText}>Welcome</Text>
-              </View>
-              <View style={styles.formContainer}>
-                <Text style={styles.loginTitleText}>Enter Order Details</Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+          <View  style={styles.headerContainer}>
+         
+          <TouchableOpacity  onPress={()=>props.navigation.navigate("Home")}>
+                        <Icon  name='arrow-back'  size={RFValue(30, 580)} color="white" style={styles.icon} />                
+                    </TouchableOpacity>
+                   
+                    <View style={{justifyContent:'center', width:'100%'}}>
+                <Text style={styles.headerText}>Generate QR Code</Text>
+                </View>
+          </View>
+
+
+          <View style={styles.formContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+            <Text style={styles.loginTitleText}>Enter Order Details</Text>
                 <View style={styles.hr}></View>
 
-                    <View style={styles.inputBox}>
-                    <Text style={styles.inputLabel}>Order Id *</Text>
+                    <View style={styles.inputView}>
+                    <Text style={styles.inputLabel}>Order Id </Text>
                     <TextInput
                     style={styles.input}
                     placeholder="Order Id"
@@ -95,8 +102,8 @@ const QrDataForm = () => {
                     />
                 </View>
 
-                    <View style={styles.inputBox}>
-                        <Text style={styles.inputLabel}>Amount *</Text>
+                    <View style={styles.inputView}>
+                        <Text style={styles.inputLabel}>Amount </Text>
                         <TextInput
                         style={styles.input}
                         placeholder="Amount"
@@ -108,8 +115,8 @@ const QrDataForm = () => {
                         />
                     </View>
 
-                    <View style={styles.inputBox}>
-                        <Text style={styles.inputLabel}>Purpose *</Text>
+                    <View style={styles.inputView}>
+                        <Text style={styles.inputLabel}>Purpose </Text>
                         <TextInput
                         style={styles.input}
                         placeholder="Purpose"
@@ -122,96 +129,195 @@ const QrDataForm = () => {
                     </View>
                
                   <TouchableOpacity
-                    style={styles.loginButton}
+                   style={styles.sendButton}
                     onPress={() => {
                       onSubmit();
                     }}
                     >
-                    <Text style={styles.loginButtonText}>Generate QR code</Text>
+                    <Text style={styles.sendText}>Submit</Text>
                   </TouchableOpacity>
-              </View>
-            </View>
-          </ScrollView>
-      );
-    };
+                  </ScrollView>
+                  </View>
+      
+      </View>
+      </TouchableWithoutFeedback>
+  )
+}
+
+const styles=StyleSheet.create({
+  container:{
+      flex:4,
+     backgroundColor: color.primary,
+     
+     
+  },
+
+  headerContainer:{
+     
+      backgroundColor: color.primary,
+      justifyContent: 'space-between',
+      textAlign: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      flexDirection: 'row',
+       paddingRight:20,
+       paddingHorizontal:20,
+       paddingVertical:20
+    
+     
+     // width: '100%',
     
 
 
+  },
+  formContainer:{
+      flex:3,
+    //  marginHorizontal: 20,
+   // marginVertical:30,
+     backgroundColor: 'white',
+      borderTopLeftRadius:30,
+      borderTopRightRadius:30,
+     paddingVertical:20,
+    
+    
+    
+   
+  },
+  headerText:{
+    fontSize: RFValue(18, 580),
+    fontWeight:'bold',
+    color: 'white',
+    textAlign: 'center',
+  },
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 4,
+  loginTitleText: {
+    fontSize: RFValue(16, 580),
+    color: 'black',
+    fontWeight: 'bold',
+    paddingHorizontal:20
+  },
+
+ 
+  
+  inputView:{
+      width: '90%',
+      //height: RFValue(45, 580),
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    // justifyContent: 'flex-start',
+      marginTop: 10,
+      backgroundColor: 'white',
+      marginHorizontal:20,
+      //borderWidth:1,
+      //borderColor: color.primary,
+      borderRadius: 4,
+
+      
+    
+
+
+     
+  },
+  inputLabel: {
+      fontSize: RFValue(16),
+      fontWeight: '600',
+      color: 'black'
+  },
+  input: {
+     fontSize:RFValue(16),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: RFValue(45),
+    color:"black",
+   paddingHorizontal:20,
+   marginTop:5,
+   
+  
+   
+    borderRadius: 4,
+    shadowColor: 'gray',
+
+    shadowOffset: {
+        width: 0,
+        height: 2,
     },
-    headerSection: {
-      flex: 1,
-      position: 'relative',
+    shadowOpacity: 0.25,
+    shadowRadius: 8.84,
+  
+    elevation: 2,
+  },
+  contactButton:{
+      justifyContent: 'center',
+       alignItems: 'center',
+       paddingHorizontal:10,
+       backgroundColor: '#EF862F',  
+       height: '100%',
+  },
+  purposeInput:{
+      width: '90%',
+    
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+     // borderWidth:1,
+     // borderColor: color.primary,
+      marginTop: 10,
+     // backgroundColor: '#E1E1F5',
+      marginHorizontal:20,
+      paddingBottom:50,
+      marginBottom:30,
+     // marginVertical:30,
+     // height:'30%',
+    
+     
+      borderRadius: 4,
+      shadowColor: 'gray',
+
+      shadowOffset: {
+          width: 0,
+          height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 8.84,
+    
+      elevation: 2,
+
+
+  },
+  logo: {
+      width: '80%',
+      height: '70%',
+    },
+
+  sendButton: {
       justifyContent: 'center',
       alignItems: 'center',
-      paddingTop: 15,
-      backgroundColor: color.primary,
-      borderBottomLeftRadius: 30,
-      borderBottomRightRadius: 30,
-    },
-  
-    welcomeText: {
-      fontSize: RFValue(20, 580),
-      fontWeight: 'bold',
-      color: 'white',
-      marginVertical: 10,
-    },
-    formContainer: {
-      flex: 3,
-      backgroundColor: 'white',
-      marginTop: 20,
-      margin: 20,
-      padding: 10,
-      borderRadius: 10,
-    },
-    loginTitleText: {
-      fontSize: RFValue(20, 580),
-      color: 'black',
-      fontWeight: 'bold',
-      marginTop: 0,
-    },
-  
-    hr: {
-      width: '100%',
-      height: 0.5,
-      backgroundColor: '#444',
-      marginTop: 6,
-    },
-    inputBox: {
-      marginTop: 10,
-    },
-    inputLabel: {
-      fontSize: RFValue(16, 580),
-      marginBottom: 6,
-      color: 'black',
-    },
-    input: {
-      width: '100%',
-      height: 40,
-      borderWidth: 1,
-      backgroundColor: '#dfe4ea',
-      borderRadius: 4,
-      paddingHorizontal: 10,
-    },
-    loginButton: {
+      height: RFValue(45),
       backgroundColor: color.primary,
       marginTop: 20,
+
+      marginHorizontal:20,
+     
       paddingVertical: 10,
-      borderRadius: 4,
-    },
-    loginButtonText: {
+     
+      borderRadius: 5,
+
+
+      shadowOffset: {
+          width: 0,
+          height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 8.84,
+    
+      elevation: 8,
+  },
+  sendText: {
       color: '#fff',
       textAlign: 'center',
-      fontSize: 20,
+      fontSize: RFValue(14),
       fontWeight: 'bold',
-    },
-    error: {
-      color: 'red',
-    },
-  });
+  },
+})
 
 
   export default QrDataForm;

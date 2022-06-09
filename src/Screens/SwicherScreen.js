@@ -17,9 +17,10 @@ const SwicherScreen = () => {
           const date = new Date();
           const currentTimeMs = date.getTime();
           const futureExpTimeMs = jsonValue.exp * 1000;
+          nav.navigate('HomeScreen');
           //   console.log(futureExpTimeMs, '1');
           //   console.log(currentTimeMs, '2');
-          if (futureExpTimeMs >= currentTimeMs) {
+         /* if (futureExpTimeMs >= currentTimeMs) {
             //load data to reduxstore
             dispatch({type: 'USER_AUTH_INFO', payload: jsonValue});
             nav.push('HomeScreen');
@@ -28,7 +29,7 @@ const SwicherScreen = () => {
             AsyncStorage.clear().then(() => {
               consle.log('storate cleared successfully');
             });
-          }
+          }*/
         } else {
           nav.navigate('Auth');
         }

@@ -10,7 +10,7 @@ const UserAccountScreen = (props) => {
       <View style={styles.headerContainer}>
       <View style={{flex:1, flexDirection: 'row', justifyContent: 'space-between', alignContent: 'space-between', alignItems: 'center' }}>
       <TouchableOpacity style={{paddingVertical:20,  paddingHorizontal:90}} onPress={()=>props.navigation.goBack(null)}>
-                        <Icon color='#333' name='arrow-back'  size={RFValue(20, 580)} color="white" style={styles.icon} />                
+                        <Icon  name='arrow-back'  size={RFValue(20, 580)} color="white" style={styles.icon} />                
                     </TouchableOpacity>
                    
             
@@ -19,13 +19,13 @@ const UserAccountScreen = (props) => {
 
       
       <TouchableOpacity style={{paddingVertical:20, paddingHorizontal:90}} >
-                        <Icon color='#333' name='more'  size={RFValue(20, 580)} color="white" style={styles.icon} />                
+                        <Icon  name='more'  size={RFValue(20, 580)} color="white" style={styles.icon} />                
                     </TouchableOpacity>
 
       </View>
       <View style={styles.userImgContainer}>
       <Icon
-                color="#333"
+               
                 name="person"
                // style={styles.userImg}
                 type="font-awesome"
@@ -109,15 +109,16 @@ const styles=StyleSheet.create({
   },
   textTitle:{
     marginVertical:10,
-    fontSize:  RFValue(13, 580),
-    fontWeight: '900',
+    fontSize:  RFValue(16),
+    fontWeight: '600',
     color: 'black'
   },
   text:{
-    fontSize: RFValue(13, 580),
+    fontSize: RFValue(16),
     backgroundColor: 'white',
     paddingVertical:10,
     paddingHorizontal:5,
+    color:'gray',
     borderRadius:4,
    fontWeight: '500',
     shadowOffset: {

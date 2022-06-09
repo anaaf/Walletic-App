@@ -21,7 +21,7 @@ import QrDataForm from '../Screens/QrGenerationDataForm';
 import color from '../colors/colors';
 import TransferFormScreen from '../Screens/TransferFormScreen';
 import NotificationsScreen from '../Screens/App/NotificationsScreen';
-
+import StatementsScreen from '../Screens/App/StatementsScereen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,18 +31,18 @@ const BottomTabNavigator = () => {
     <Tab.Navigator
     tabBarOptions={{
       labelPosition: 'below-icon',
-      activeTintColor: '#7ADAE0',
+      activeTintColor: 'white',
   
     
-      inactiveTintColor: 'white',
+      inactiveTintColor: '#BDC3C7',
       style: {
           // Remove border top on both android & ios
           borderTopWidth: 0,
           borderTopColor: "transparent",
           backgroundColor: color.primary,
           elevation: 0,
-          borderTopLeftRadius:20,
-          borderTopRightRadius: 20,
+         // borderTopLeftRadius:20,
+         // borderTopRightRadius: 20,
           shadowColor: '#5bc4ff',
           shadowOpacity: 0,
         
@@ -127,6 +127,7 @@ const MainContainer = () => {
         <Stack.Screen name="QrFailure" component={QrErrorScreen} />
         <Stack.Screen name="QrDataForm" component={QrDataForm} />
         <Stack.Screen name="QrGeneration" component={QrGeneration} />
+        <Stack.Screen name='statements' component={StatementsScreen}/>
         <Stack.Screen name="Login" component={LoginNavigator} />
         {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
       </Stack.Navigator>

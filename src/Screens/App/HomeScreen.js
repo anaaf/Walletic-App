@@ -4,6 +4,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {logout} from '../../redux/actions/Auth';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 // const HomeScreen = () => {
 //   const state = useSelector(state => state);
 //   console.log(state);
@@ -89,7 +91,7 @@ const HomeScreen = props => {
           <View style={styles.topMenuContainer}>
             <TouchableOpacity>
               <Icon
-                color="#333"
+               
                 name="menu"
                 type="font-awesome"
                 size={RFValue(20, 580)}
@@ -103,9 +105,9 @@ const HomeScreen = props => {
               style={styles.logo}
             />
 
-            <TouchableOpacity onPress={()=>props.navigation.navigate('notifications')} >
+            <TouchableOpacity onPress={()=> props.navigation.navigate('notifications')} >
               <Icon
-                color="#333"
+               
                 name="notifications"
                 type="font-awesome"
                 size={RFValue(20, 580)}
@@ -118,7 +120,7 @@ const HomeScreen = props => {
 
             <TouchableOpacity onPress={log_out}>
               <Icon
-                color="#333"
+               
                 name="log-out"
                 type="font-awesome"
                 size={RFValue(20, 580)}
@@ -129,28 +131,30 @@ const HomeScreen = props => {
           </View>
           <View style={styles.blanceContainer}>
             <View style={styles.blanceSubContainer}>
-              <Text style={styles.blanceText}>Balance</Text>
-              <Text style={styles.totalAmount}>Rs 129343343.54</Text>
-              
+
+              <Text style={styles.blanceText}>Navid Anjum</Text>
+             
+              <View style={{flexDirection:'row'}}>
+           
+              <Text style={styles.RSText}>Rs </Text> 
+
+              <Text style={styles.totalAmount}>12,990</Text>             
+              </View>
             </View>
-            <View style={styles.addContainer}>
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Icon
-                  color="#333"
-                  name="add"
-                  type="font-awesome"
-                  size={30}
-                  color="white"
-                  padding={10}
-                />
-              </TouchableOpacity>
-            </View>
+            <View style={styles.statementContainer}>
+              <View style={styles.acccountDetailsContainer}>
+                <TouchableOpacity style={styles.infoButtons}>
+                  <Text style={styles.cartButtonText}>Share Account Info</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.transactionContainer}>
+              <TouchableOpacity onPress={()=> props.navigation.navigate('statements')} style={styles.infoButtons}>
+                  <Text style={styles.cartButtonText}>Your Statements</Text>
+                </TouchableOpacity>
+              </View>
+
+            </View >
+          
           </View>
         </View>
       </View>
@@ -166,7 +170,8 @@ const HomeScreen = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: '#F5F8F8'
+    backgroundColor: '#F5F8F8',
+    backgroundColor:'white'
 
 },
 header: {
@@ -177,7 +182,7 @@ header: {
 
 },
 topMenuContainer: {
-    flex: 1,
+    flex: 1.5,
     flexDirection: 'row',
     //backgroundColor: "pink",
     justifyContent: 'space-between',
@@ -185,12 +190,10 @@ topMenuContainer: {
 
 },
 blanceContainer: {
-    flex: 2,
-    backgroundColor: "#8e00eb",
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flex: 6,
+    backgroundColor:color.primary,
+    flexDirection: 'column',
+    justifyContent: 'center',
     marginHorizontal: 20,
    // width: "90%",
     shadowColor: 'white',
@@ -206,34 +209,70 @@ blanceContainer: {
 
 },
 blanceSubContainer: {
-    // backgroundColor: 'blue',
-    margin: 20,
-    width: '70%'
+  flex:4,
+  justifyContent:'center',
+  alignContent:'center',
+  alignItems:'center',
+ 
+     backgroundColor: 'white',
+  //  marginBottom: 10,
+    width: '100%'
 
+},
+
+statementContainer:{
+   flex:2,
+   flexDirection:'row',
+   backgroundColor:'red'
+},
+acccountDetailsContainer:{
+  flex:1, 
+  backgroundColor:'#1E3B6C',
+  borderRightWidth:2,
+  borderRightColor:'white'
+
+},
+transactionContainer:{
+  flex:1, 
+  backgroundColor:'#1E3B6C'
+  
+},
+infoButtons:{
+  height:"100%",
+  width:"100%",
+  justifyContent:'center',
+  alignItems:"center",
+  alignSelf: 'center'
+
+},
+cartButtonText:{
+  color:"white",
+  fontSize: RFValue(16)
+
+},
+RSText:{
+color:color.primary,
+alignSelf:'center',
+fontWeight:'500', 
+fontSize: RFValue(16)
 },
 featuresContainer: {
     flex: 4,
     flexDirection: 'row',
     //  backgroundColor: 'white',
   },
-  logo: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-   
-
-},
+ 
 blanceText: {
-    fontSize: 16,
+    fontSize: RFValue(18),
     fontWeight: '800',
-    color: '#C8C8C8',
+    color: 'black',
 
 },
 totalAmount: {
-    fontSize: RFValue(18, 580),
-    color: 'white',
-    marginTop: 20,
-    fontWeight: '900',
+    fontSize: RFValue(20),
+    color: 'black',
+   // marginTop: 20,
+    fontWeight: '600',
    // width: "70%"
 
 },
@@ -248,8 +287,8 @@ addContainer: {
 },
 
 logo: {
-    width: '70%',
-    height: '80%',
+    width: RFValue(120),
+    height: RFValue(40),
 },
 userName:{
   fontSize: RFValue(16, 580),

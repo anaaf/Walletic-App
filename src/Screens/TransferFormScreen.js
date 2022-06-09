@@ -1,23 +1,38 @@
-import React from "react";
+import React, {useRef, useState} from "react";
 import { View, Text,StyleSheet,TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, Image } from "react-native";
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon from "react-native-ionicons";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import color from "../colors/colors";
 import LottieView from 'lottie-react-native';
+import {Picker} from '@react-native-picker/picker';
 
 
 
 const TransferFormScreen=(props)=>{
+    const [purpose, setPurpose] = useState('Select');
+    const pickerRef = useRef();
+
+    function open() {
+      pickerRef.current.focus();
+    }
+  
+    function close() {
+      pickerRef.current.blur();
+    }
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-            <View style={styles.headerContainer}>
-            <TouchableOpacity style={{padding:20}} onPress={()=>props.navigation.goBack(null)}>
-                        <Icon color='#333' name='arrow-back'  size={RFValue(30, 580)} color="white" style={styles.icon} />                
-                    </TouchableOpacity>
-                    <Image source={require('../images/logo1.png')} style={styles.logo} />
-            </View>
+        <View  style={styles.headerContainer}>
+         
+         <TouchableOpacity  onPress={()=>props.navigation.navigate("Home")}>
+                       <Icon  name='arrow-back'  size={RFValue(30, 580)} color="white" style={styles.icon} />                
+                   </TouchableOpacity>
+                  
+                   <View style={{justifyContent:'center', width:'100%'}}>
+               <Text style={styles.headerText}>Transfer Details</Text>
+               </View>
+         </View>
 
 
             <View style={styles.formContainer}>
@@ -59,13 +74,18 @@ const TransferFormScreen=(props)=>{
                             
                </View>
                <Text style={styles.inputLabel}>Purpose</Text>
-               <View style={styles.purposeInput}>
-                            <TextInput
-                                style={styles.input}
-                                secureTextEntry={true}
-                                placeholder=' Sending purpose..'
-                                multiline={true}
-                            />
+               <View style={styles.dropDownStyle}>
+               <Picker
+                ref={pickerRef}
+                mode='dropdown'
+                selectedValue={purpose}
+                onValueChange={(itemValue, itemIndex) => setPurpose(itemValue)}>
+                <Picker.Item label="Select" value="Select"  color="gray" paddingHorizontal={20}/>
+                <Picker.Item label="Education" value="Education" />
+                <Picker.Item label="Business" value="Business" />
+                <Picker.Item label="Loan" value="Loan" />
+                <Picker.Item label="Other" value="Other" />
+              </Picker>
                             
                </View>
                        
@@ -89,18 +109,17 @@ const styles=StyleSheet.create({
     },
 
     headerContainer:{
-        flex: 1,
-        backgroundColor: color.primary,
-        justifyContent: 'space-between',
-        textAlign: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
-        flexDirection: 'row',
-         paddingRight:20,
-      
        
-       // width: '100%',
-      
+      backgroundColor: color.primary,
+      justifyContent: 'space-between',
+      textAlign: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      flexDirection: 'row',
+       paddingRight:20,
+       paddingHorizontal:20,
+       paddingVertical:20
+    
   
 
     },
@@ -119,17 +138,20 @@ const styles=StyleSheet.create({
      
     },
     headerText:{
-      fontSize: RFValue(20, 580),
-      fontWeight:'bold',
-      color: '#8F490F',
-      textAlign: 'center',
-    },
+        fontSize: RFValue(18),
+       
+        width:'100%',
+        fontWeight:'bold',
+        alignSelf:'center',
+        color: 'white',
+        textAlign: 'center',
+      },
 
   
     
     inputView:{
         width: '90%',
-        height: RFValue(45, 580),
+        height: RFValue(45),
         flexDirection: 'row',
         justifyContent: 'space-between',
       // justifyContent: 'flex-start',
@@ -153,17 +175,41 @@ const styles=StyleSheet.create({
 
        
     },
+    dropDownStyle:{
+        height: RFValue(45),
+        justifyContent: 'center',
+      // justifyContent: 'flex-start',
+        marginTop: 10,
+        backgroundColor: 'white',
+        marginHorizontal:20,
+        //borderWidth:1,
+        //borderColor: color.primary,
+        borderRadius: 4,
+
+        
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 8.84,
+      
+        elevation: 10,
+
+
+    },
     inputLabel: {
-        fontSize: RFValue(14, 580),
+        fontSize: RFValue(16),
         marginTop: 6,
         marginHorizontal:20,
-        fontWeight: 'bold',
+        fontWeight: '600',
         color: 'black'
     },
     input: {
-        fontSize:RFValue(14, 580),
-        height: RFValue(45, 580),
+        fontSize:RFValue(16),
+        height: RFValue(45),
         paddingHorizontal: 20,
+        color:"black",
 
     },
    
@@ -212,8 +258,8 @@ const styles=StyleSheet.create({
     sendButton: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: RFValue(45, 580),
-        backgroundColor: 'green',
+        height: RFValue(45),
+        backgroundColor:color.primary,
         marginTop: 20,
 
         marginHorizontal:20,
@@ -235,7 +281,7 @@ const styles=StyleSheet.create({
     sendText: {
         color: '#fff',
         textAlign: 'center',
-        fontSize: RFValue(14, 580),
+        fontSize: RFValue(14),
         fontWeight: 'bold',
     },
 })

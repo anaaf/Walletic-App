@@ -31,7 +31,7 @@ const HomeFeatures = props => {
                     <TouchableOpacity onPress={props.onTransferPress} style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <View style={styles.iconContainer}>
 
-                            <Icon color='#333' name='send' type='font-awesome' size={RFValue(35, 580)} color="#7ADAE0" style={styles.icon} />
+                            <Icon  name='send' type='font-awesome' size={RFValue(35, 580)} color={'#1E3B6C'} style={styles.icon} />
                         </View>
                         <Text style={styles.featureText}>Send Money</Text>
                     </TouchableOpacity>
@@ -41,7 +41,7 @@ const HomeFeatures = props => {
                     <TouchableOpacity onPress={props.onTransferPress}  style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <View style={styles.iconContainer}>
 
-                            <Icon color='#333' name='bank' type='font-awesome' size={RFValue(35, 580)} color="#7ADAE0" style={styles.icon} />
+                            <Icon  name='bank' type='font-awesome' size={RFValue(35, 580)} color={'#1E3B6C'} style={styles.icon} />
                         </View>
                         <Text style={styles.featureText}>Transfer To Bank Account</Text>
                     </TouchableOpacity>
@@ -54,7 +54,7 @@ const HomeFeatures = props => {
                     <TouchableOpacity onPress={QrGenerationHandler} style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <View style={styles.iconContainer}>
 
-                            <Icon color='#333' name='qrcode' type='font-awesome' size={RFValue(35, 580)} color="#7ADAE0" style={[styles.icon,{paddingHorizontal:15}]} />
+                            <Icon  name='qrcode' type='font-awesome' size={RFValue(35, 580)} color={'#1E3B6C'} style={[styles.icon,{paddingHorizontal:15}]} />
                         </View>
                         <Text style={styles.featureText}>Generate QR Code</Text>
                     </TouchableOpacity>
@@ -64,7 +64,7 @@ const HomeFeatures = props => {
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <View style={styles.iconContainer}>
 
-                            <Icon color='#333' name='list' type='font-awesome' size={RFValue(35, 580)} color="#7ADAE0" style={styles.icon} />
+                            <Icon name='list' type='font-awesome' size={RFValue(35, 580)} color={'#1E3B6C'} style={styles.icon} />
                         </View>
                         <Text style={styles.featureText}>Send Bills/invoices</Text>
                     </TouchableOpacity>
@@ -79,25 +79,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:  '#F5F8F8',
-    marginHorizontal:20
-  
+    marginHorizontal:10,
+    backgroundColor:'white'
+
 
 },
 subContainer:{
     flex: 1, 
     flexDirection: 'row', 
-    justifyContent: 'space-around', 
-    borderWidth:1,
-    borderColor: color.primary,
-    marginVertical:10,
-    borderRadius:5
+    justifyContent: 'space-between', 
+    borderRadius:5,
+    marginVertical:5,
 },
 featureSubContainer: {
-
-
+    flex:1,
+    //backgroundColor:'red',
+    backgroundColor:'#E7E2DD',
+    paddingHorizontal:3,
     justifyContent: 'center',
+    marginHorizontal:10,
     alignItems: 'center',
-    width: '30%',
+    marginVertical:5,
+    width: '100%',
+    borderRadius:10
+  
    
     
     
@@ -143,18 +148,16 @@ icon: {
 textstyle:{
      alignSelf: 'flex-start',
     // alignSelf: 'center',
-    paddingTop:30,
+    paddingTop:10,
+    paddingHorizontal:10,
+
    textAlign: 'center',
    alignSelf: 'flex-start',
     fontSize: RFValue(16),
     fontWeight: 'bold',
     color: 'black',
 },
-verticalLine:{
-     borderRightWidth:1,
-     borderColor: color.primary
 
-}
 
 });
 

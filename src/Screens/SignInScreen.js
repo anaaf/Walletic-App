@@ -265,8 +265,8 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingVertical:40,
     backgroundColor: color.primary,
-    borderBottomLeftRadius: 60,
-    borderBottomRightRadius: 60,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
 
   welcomeText: {
@@ -371,8 +371,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
    
 },
-
-
 
 });
 

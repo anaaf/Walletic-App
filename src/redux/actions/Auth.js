@@ -5,7 +5,7 @@ export const verifyPhone = phoneNumber => {
   //   verifying phone number and delivering msg on mobile
   return async dispatch => {
     try {
-      const res = await fetch(`${baseUrl}/verify/phone`, {
+      const res = await fetch(`${baseUrl}/api/auth/verify/phone`, {
         method: 'POST',
         body: JSON.stringify({
           phoneNo: `+92${phoneNumber}`,
@@ -23,6 +23,7 @@ export const verifyPhone = phoneNumber => {
         return true; // to suggest ready to navigate
       }
     } catch (err) {
+      console.log(err)
       throw new Error('Your request is failed');
     }
   };
@@ -36,7 +37,7 @@ export const verifyCode = otpCode => {
     try {
       const phoneNumber = getState().auth.phoneNumber;
       console.log(phoneNumber);
-      const res = await fetch(`${baseUrl}/verify/code`, {
+      const res = await fetch(`${baseUrl}/api/auth/verify/code`, {
         method: 'POST',
         body: JSON.stringify({
           code: otpCode,
@@ -69,7 +70,7 @@ export const signUp = (fullname, email, password, role) => {
     // const phoneNumber = '3332176508';
     console.log('signup');
     try {
-      const res = await fetch(`${baseUrl}/signup`, {
+      const res = await fetch(`${baseUrl}/api/auth/signup`, {
         method: 'POST',
         body: JSON.stringify({
           fullname,
@@ -106,7 +107,7 @@ export const login = (username, password) => {
 
     console.log('login');
     try {
-      const res = await fetch(`${baseUrl}/login`, {
+      const res = await fetch(`${baseUrl}/api/auth/login`, {
         method: 'POST',
         body: JSON.stringify({
           username,
