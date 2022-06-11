@@ -20,7 +20,7 @@ const QrDataScreen = (props) => {
         <View style = {styles.container}>
             <View style={styles.headerContainer}>
             <TouchableOpacity style={{padding:20}} onPress={()=>props.navigation.goBack(null)}>
-                        <Icon color='#333' name='arrow-back'  size={RFValue(30, 580)} color="white" style={styles.icon} />                
+                        <Icon  name='arrow-back'  size={RFValue(30, 580)} color="white" style={styles.icon} />                
                     </TouchableOpacity>
                     <Image source={require('../images/logo1.png')} style={styles.logo} />
             </View>

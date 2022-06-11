@@ -1,22 +1,24 @@
 import React, {useEffect} from 'react';
 import {Text, View, ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {dispatch} from 'react-redux';
+import {dispatch, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fetchBlanceInfo} from "../redux/actions/blanceInfoActions"
 const SwicherScreen = () => {
   const nav = useNavigation();
-  console.log('swicher screen shown');
+  const dispatch=useDispatch();
   AsyncStorage.getItem('user_data')
     .then(jsonValue => {
       if (jsonValue != null) {
         jsonValue = JSON.parse(jsonValue);
-        console.log(jsonValue, 'async');
+       
         // formate of jwt exp
         // The number is the number of seconds since Jan 1 1970
         if (jsonValue.token) {
           const date = new Date();
           const currentTimeMs = date.getTime();
           const futureExpTimeMs = jsonValue.exp * 1000;
+         dispatch(fetchBlanceInfo(jsonValue.user_id, jsonValue.token));
           nav.navigate('HomeScreen');
           //   console.log(futureExpTimeMs, '1');
           //   console.log(currentTimeMs, '2');

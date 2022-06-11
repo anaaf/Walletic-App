@@ -4,29 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {logout} from '../../redux/actions/Auth';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-// const HomeScreen = () => {
-//   const state = useSelector(state => state);
-//   console.log(state);
-//   const nav = useNavigation();
-//   const dispatch = useDispatch();
-//   const log_out = async () => {
-//     dispatch(logout());
-//     await AsyncStorage.clear();
-//     nav.navigate('Login');
-//   };
-
-//   return (
-//     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//       <Button onPress={log_out} title="logout" />
-//       <Text>HomeScreen</Text>
-//     </View>
-//   );
-// };
-
-// export default HomeScreen;
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -43,13 +21,19 @@ import Icon from 'react-native-ionicons';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import HomeFeatures from '../../Components/HomeFeatures';
 import { useBackHandler, exitApp } from '@react-native-community/hooks'
-
+import {fetchBlanceInfo} from "../../redux/actions/blanceInfoActions"
 const HomeScreen = props => {
   // for testing purpose
-
+  const [userId, setUserId]=useState('');
+  const [token, setToken]=useState('');
   const state = useSelector(state => state);
-  console.log(state);
 
+
+  const accountAllData =useSelector(state=>state.AccountInfo.accountData)
+
+  
+
+  console.log("finally blance is :",accountAllData)
   // actual
 
   const nav = useNavigation();
@@ -82,7 +66,28 @@ const HomeScreen = props => {
     return true;
   };
   useBackHandler(backActionHandler);
-  //////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////CALL API TO FETCH BLANCE ////////////////////////////////////////////////
+ /* AsyncStorage.getItem('user_data')
+  .then(jsonValue => {
+    if (jsonValue != null) {
+      jsonValue = JSON.parse(jsonValue);
+      setUserId(jsonValue.user_id);
+      setToken(jsonValue.token);
+     console.log(jsonValue)
+     
+    }}
+    )
+ 
+  
+  useEffect(()=>{
+    const blanceHandler= async ()=>{
+      await dispatch(fetchBlanceInfo(userId, token));
+    
+    }
+    blanceHandler();
+  },
+  [])*/
+
   return (
     <View style={styles.container}>
       {/* <Button onPress={log_out} title="logout" /> */}
@@ -132,13 +137,13 @@ const HomeScreen = props => {
           <View style={styles.blanceContainer}>
             <View style={styles.blanceSubContainer}>
 
-              <Text style={styles.blanceText}>Navid Anjum</Text>
+              <Text style={styles.blanceText}>{accountAllData?accountAllData.fullname: null}</Text>
              
               <View style={{flexDirection:'row'}}>
            
               <Text style={styles.RSText}>Rs </Text> 
 
-              <Text style={styles.totalAmount}>12,990</Text>             
+              <Text style={styles.totalAmount}>{accountAllData?accountAllData.balance: null}</Text>             
               </View>
             </View>
             <View style={styles.statementContainer}>
@@ -149,7 +154,7 @@ const HomeScreen = props => {
               </View>
               <View style={styles.transactionContainer}>
               <TouchableOpacity onPress={()=> props.navigation.navigate('statements')} style={styles.infoButtons}>
-                  <Text style={styles.cartButtonText}>Your Statements</Text>
+                  <Text style={styles.cartButtonText}>View Statements</Text>
                 </TouchableOpacity>
               </View>
 
@@ -197,6 +202,7 @@ blanceContainer: {
     marginHorizontal: 20,
    // width: "90%",
     shadowColor: 'white',
+   
     shadowOffset: {
         width: 4,
         height: 5,
@@ -213,6 +219,8 @@ blanceSubContainer: {
   justifyContent:'center',
   alignContent:'center',
   alignItems:'center',
+  borderTopRightRadius:5,
+  borderTopStartRadius:5,
  
      backgroundColor: 'white',
   //  marginBottom: 10,
@@ -223,18 +231,25 @@ blanceSubContainer: {
 statementContainer:{
    flex:2,
    flexDirection:'row',
-   backgroundColor:'red'
+  
 },
 acccountDetailsContainer:{
   flex:1, 
-  backgroundColor:'#1E3B6C',
-  borderRightWidth:2,
-  borderRightColor:'white'
+  backgroundColor:'#5403AB',
+  borderWidth:2,
+  borderRightWidth:0,
+  borderLeftWidth:0,
+  borderBottomWidth:0,
+  borderColor:'silver'
 
 },
 transactionContainer:{
   flex:1, 
-  backgroundColor:'#1E3B6C'
+  backgroundColor:'#5403AB',
+  borderWidth:2,
+  borderRightWidth:0,
+  borderBottomWidth:0,
+  borderColor:'silver'
   
 },
 infoButtons:{

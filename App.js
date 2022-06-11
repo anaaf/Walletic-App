@@ -13,6 +13,7 @@ import Navigation from './src/Navigation/Navigation';
 import App1 from './App1';
 import QrDataScreen from './src/Screens/QrDataScreen';
 import color from './src/colors/colors';
+import AccountInfo from './src/redux/reducers/AccountInfoReducer';
 //import store1 from './Playground/Redux/Store' // pg
 
 //combining the reducers
@@ -21,7 +22,8 @@ const reducers = combineReducers({
   QrScannerReducer, 
   QrDataSaveReducer,
   modalReducer,
-  QRCodeGenerationReducer
+  QRCodeGenerationReducer,
+  AccountInfo
 });
 const store = createStore(reducers, applyMiddleware(thunk));
 

@@ -23,7 +23,7 @@ export const verifyPhone = phoneNumber => {
         return true; // to suggest ready to navigate
       }
     } catch (err) {
-      console.log(err)
+     
       throw new Error('Your request is failed');
     }
   };
@@ -126,6 +126,7 @@ export const login = (username, password) => {
         throw new Error('Something went wrong!');
       }
       storeData(data);
+     
       dispatch({type: phoneVerfication.USER_DATA, payload: data});
       return true;
     } catch (err) {
