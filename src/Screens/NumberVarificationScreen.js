@@ -109,16 +109,21 @@ useEffect(()=>{
           <Image source={require('../images/logo1.png')} style={styles.logo} />
         </View>
 
-        <View style={{flex: 2, backgroundColor: 'white'}}>
+        <View style={styles.bodyContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.getText}>Get Started</Text>
             <Text style={styles.text}>Enter Your Mobile Number</Text>
-           
+
+            <View   style={styles.mobileNumberContainer}>
+            <View style={{flexDirection:'row'}}>
+          
+              <Text  style={styles.input}>+92</Text>
+            </View>
             <TextInput
               //onChangeText={}
               type="number"
               keyboardType="numeric"
-              placeholder={'3XX-XXXXXXX'}
+              placeholder={'XXXXXXXXXX'}
               required
               autoFocus={true}
               placeholderTextColor="gray"
@@ -128,7 +133,7 @@ useEffect(()=>{
               maxLength={10}
 
             />
-           
+           </View>
               <TouchableOpacity style={styles.button} onPress={onSubmit}>
                 <View
                   style={{
@@ -142,7 +147,7 @@ useEffect(()=>{
                   <Text style={styles.buttonText}>Next</Text>
                   <Icon
                     name="arrow-right"
-                    size={RFValue(16, 580)}
+                    size={RFValue(20, 580)}
                     color="white"
                   /></>
                   )}
@@ -161,7 +166,7 @@ useEffect(()=>{
                 <Text style={styles.buttonText}>Login</Text>
                 <Icon
                   name="user"
-                  size={RFValue(16, 580)}
+                  size={RFValue(20, 580)}
                   color="white"
                 />
               </View>
@@ -177,10 +182,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 3,
     backgroundColor:'white',
-    
+    position:'relative',
+  
   },
   header: {
-   
+    flex:1,
+    width:'100%',
     backgroundColor: color.primary,
     justifyContent: 'center',
     textAlign: 'center',
@@ -189,14 +196,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
      borderBottomLeftRadius:30,
      borderBottomRightRadius:30,
+     position:'relative'
     
 
   },
   logo: {
-    width: '50%',
-    minHeight: '20%',  
-    paddingVertical:30,
-    height: '50%',
+    width: '70%',
+    minHeight: "30%",
+    
+    height: '40%',
+  },
+  bodyContainer:{
+    flex: 2,
+    width:'100%',
+     backgroundColor: 'white', 
+     justifyContent:'center', 
+     alignSelf:'center'
   },
   getText: {
     fontSize: RFValue(25, 580),
@@ -211,8 +226,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  input: {
-   
+  mobileNumberContainer:{
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
+    alignContent:'center',
     width: '90%',
     height: RFValue(45, 580),
     paddingHorizontal:30,
@@ -226,6 +244,12 @@ const styles = StyleSheet.create({
     color: 'black',
     borderWidth: 0.5,
     marginVertical:10,
+
+  },
+  input: {
+     fontSize: RFValue(16),
+    color: 'black',
+   
   
   },
 

@@ -1,28 +1,71 @@
 import React, {useRef, useState} from "react";
-import { View, Text,StyleSheet,TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, Image } from "react-native";
+import { View, Text,StyleSheet,TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, Image, Alert, ActivityIndicator } from "react-native";
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon from "react-native-ionicons";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import color from "../colors/colors";
 import LottieView from 'lottie-react-native';
 import {Picker} from '@react-native-picker/picker';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { TransferAmount } from "../redux/actions/TransactionsActions";
 
 const TransferFormScreen=(props)=>{
+    const dispatch=useDispatch();
     const [purpose, setPurpose] = useState('Select');
+    const [accountNo, setAccountNo] = useState('');
+    const [amount, setAmount] = useState('');
+    const [loading, setLoading]=useState(false);
+    
     const pickerRef = useRef();
+    
+    console.log(amount)
 
-    function open() {
-      pickerRef.current.focus();
-    }
+ function isValidAccountNo(accountNo) {
+    const re = /^[-,0-9 ]+$/
+    return re.test(String(accountNo))
+  }
   
-    function close() {
-      pickerRef.current.blur();
+
+  function isValidAmount(amount) {
+    const re = /^[-,0-9 ]+$/
+    return re.test(String(amount))
+  }
+  /////////////////////////////////////// senHandler ////////////////////////////////////////////////
+  const sendHandler = async () =>{
+    if(!isValidAccountNo(accountNo) || !isValidAmount(amount) || purpose=="Select"){
+        Alert.alert(
+            "Invalid Data!",
+            "Please enter valid data and try again",
+            [
+              
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          );
     }
+    else{
+        try {
+            setLoading(true);
+            const status = await dispatch(
+              TransferAmount(accountNo, amount,purpose)
+             
+            );
+           
+            if (status) {
+              setLoading(false);
+            }
+          } catch (err) {
+            setLoading(false);
+            return Alert.alert('Transfer Failed!', err.message, [
+              { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ]);
+    }
+
+  }
+}
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
+
         <View  style={styles.headerContainer}>
          
          <TouchableOpacity  onPress={()=>props.navigation.navigate("Home")}>
@@ -38,14 +81,16 @@ const TransferFormScreen=(props)=>{
             <View style={styles.formContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.inputLabel}>Receiver Account  Number</Text>
-            <View style={styles.inputView}>
+            <View style={[styles.inputView,{borderWidth:1, borderColor: !isValidAccountNo(accountNo) && accountNo.length>0?"red":"silver", borderTopRightRadius:0,
+        borderBottomRightRadius:0, }]}>
                                
                             <TextInput
-                                style={styles.input}
-                                placeholder='03XX-XXXXXXX'
+                                style={[styles.input]}
+                                placeholder='03XXXXXXXXX'
                                 textContentType='password'
                                 autoFocus={true}
                                 keyboardType='numeric'
+                                onChangeText={(value)=>setAccountNo(value)}
                             />
                              <TouchableOpacity 
                                         style={styles.contactButton}
@@ -62,10 +107,10 @@ const TransferFormScreen=(props)=>{
                       
                      
                             <Text style={styles.inputLabel}>Amount</Text>
-                            <View style={styles.inputView}>
+                            <View style={[styles.inputView,{borderWidth:1, borderColor: !isValidAmount(amount) && amount.length>0?"red":"silver",}]}>
                             <TextInput
                                 style={styles.input}
-                               
+                                onChangeText={(value)=>setAmount(value)}
                                 placeholder='Enter Amount in PKR'
                                 keyboardType='numeric'
                                
@@ -89,8 +134,12 @@ const TransferFormScreen=(props)=>{
                             
                </View>
                        
-                         <TouchableOpacity style={styles.sendButton}>
+                         <TouchableOpacity style={styles.sendButton} onPress={sendHandler}>
+                            {loading?
+                              <ActivityIndicator size="small" color="white" />:
+                            
                             <Text style={styles.sendText}>Send</Text>
+                            }
                         </TouchableOpacity>
              </ScrollView>           
             </View>
@@ -161,6 +210,7 @@ const styles=StyleSheet.create({
         //borderWidth:1,
         //borderColor: color.primary,
         borderRadius: 4,
+       
 
         
         shadowOffset: {

@@ -24,6 +24,7 @@ import color from '../colors/colors';
       dispatch(onReadSuccess(e.data))
       // setTimeout(() => {
         // console.log("state", state)
+        console.log(e.data)
         nav.navigate("QrDataScreen");
       // }, 1000)
       };

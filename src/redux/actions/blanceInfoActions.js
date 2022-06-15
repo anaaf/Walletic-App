@@ -4,11 +4,8 @@ import { Alert } from 'react-native';
 
 export const fetchBlanceInfo = (userId, token) => {
     return async (dispatch, getState) => {
-      // const phoneNumber = getState().auth.phoneNumber;
      
      let url=`${baseUrl}/api/account/user/${userId}`
-     console.log(url)
-      console.log('Blance API CALLED');
       try {
         const res =  await fetch(url, {
          method: 'POST',
@@ -22,7 +19,7 @@ export const fetchBlanceInfo = (userId, token) => {
          },
        });
        const data = await res.json();
-       console.log(data)
+      
       await dispatch({type: phoneVerfication.ACCOUNT_DATA, payload: data});
        return true;
        

@@ -16,6 +16,7 @@ const QrDataScreen = (props) => {
 
     const data = JSON.parse(JSON.parse(qrDataState));
 
+
     return (
         <View style = {styles.container}>
             <View style={styles.headerContainer}>
@@ -26,19 +27,18 @@ const QrDataScreen = (props) => {
             </View>
             <View style={styles.detailContainer}>
             <View style= {styles.details}>
-                <Text style={styles.inputLabel}> Order Id</Text>
-                <Text style={styles.text}>{data.orderID}</Text>
-                <Text style={styles.inputLabel}> Wallet Id</Text>
-                <Text  style={styles.text}>{data.walletID}</Text>
-                <Text style={styles.inputLabel}>Invoice Amount</Text>
-                <Text  style={styles.text}>{data.invoiceAmount}</Text>
-                <Text style={styles.inputLabel}>Reciever Account</Text>
-                <Text  style={styles.text}>{data.recieverID}</Text>
+                <Text style={styles.inputLabel}>Receiver Account Number</Text>
+                <Text style={styles.text}>{data.orderId}</Text>
+
+                <Text style={styles.inputLabel}>Amount</Text>
+                <Text  style={styles.text}>{data.amount}</Text>
+                <Text style={styles.inputLabel}>Purpose</Text>
+                <Text  style={styles.text}>{data.purpose}</Text>
             </View>
             <View style= {styles.btnView}>
                 
             <TouchableOpacity style={styles.sendButton}>
-                            <Text style={styles.sendText}>Pay Now</Text>
+                            <Text style={styles.sendText}>Transfer</Text>
                         </TouchableOpacity>
             </View>
             </View>
@@ -58,11 +58,11 @@ const styles = StyleSheet.create({
       },
       details: {
          // backgroundColor:'blue',
-          alignItems: 'center',
-         
-          //justifyContent: 'center',
-         // borderWidth: 2,
-         // borderColor: '#000000',
+         justifyContent:'center',
+         alignContent:'center',
+          alignItems:'center',
+          paddingVertical:20,
+          paddingTop:30,
           flex: 0.5,
           marginVertical: '10%',
 
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     inputLabel: {
         fontSize: RFValue(14, 580),
         marginTop: 6,
-        marginHorizontal:20,
         fontWeight: 'bold',
         color: 'black',marginVertical:10
     },

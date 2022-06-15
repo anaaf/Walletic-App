@@ -47,16 +47,16 @@ const UserAccountScreen = (props) => {
 
 
         </View>
-        <Text style={styles.userName}>{accountAllData.fullname}</Text>
+        <Text style={styles.userName}>{accountAllData?accountAllData.fullname:null}</Text>
       </View>
       <View style={styles.infoContainer}>
 
         <Text style={styles.textTitle}>Email</Text>
-        <Text style={styles.text}>{accountAllData.email}</Text>
+        <Text style={styles.text}>{accountAllData?accountAllData.email:null}</Text>
         <Text style={styles.textTitle}>Phone Number</Text>
-        <Text style={styles.text}>(+92){accountAllData.phoneNo}</Text>
+        <Text style={styles.text}>(+92){accountAllData?accountAllData.phoneNo:null}</Text>
         <Text style={styles.textTitle}>Account Type</Text>
-        <Text style={styles.text}>{accountAllData.role}</Text>
+        <Text style={styles.text}>{accountAllData?accountAllData.role:null}</Text>
       </View>
     </View>
   );

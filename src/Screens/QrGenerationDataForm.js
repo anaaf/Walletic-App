@@ -23,9 +23,12 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {qrDataFormCreate} from "../redux/actions/QrActions"
 import Icon from "react-native-ionicons";
 
+
 const QrDataForm = (props) => {
 
-
+const [account, setAccount]=useState('');
+const [amount, setAmmount]=useState('');
+const [purpose, setPurpose]=useState('');
     const dataObj2 = {
         orderId: 16272,
         amount: 20000,
@@ -34,12 +37,13 @@ const QrDataForm = (props) => {
     }
 
     const dataObj = {
-        orderId: "",
-        amount: "",
-        purpose: "", 
-        walletId: phoneNumber
+        orderId: account,
+        amount: amount,
+        purpose: purpose, 
+       // walletId: phoneNumber
     }
-
+ 
+    console.log(dataObj)
     const dispatch = useDispatch();
 
     const nav = useNavigation()
@@ -48,23 +52,35 @@ const QrDataForm = (props) => {
 
     const {phoneNumber} = useSelector(state => state.auth)
  
+/////////////////////////// Input Validation //////////////////////
+function isValidAccountNo(account) {
+    const re = /^[-,0-9 ]+$/
+    return re.test(String(account))
+  }
+  
 
+  function isValidAmount(amount) {
+    const re = /^[-,0-9 ]+$/
+    return re.test(String(amount))
+  }
+//////////////////////////////////////////////////////////////////
 
     const onSubmit = () => {
-        console.log(dataObj)
-        let isNull = false;
-        Object.entries(dataObj2).map((item) => {
-            if(item[1] == "") {
-                isNull = true
-            }
-        })
+        if(!isValidAccountNo(account) || !isValidAmount(amount) || purpose.length<5){
+            Alert.alert(
+                "Invalid Data!",
+                "Please enter valid data and try again",
+                [
+                  
+                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+              );
+        }
 
-        if(!isNull) {
+      else {
             ToastAndroid.show("success", ToastAndroid.SHORT)
             dispatch(qrDataFormCreate(dataObj))
             nav.navigate("QrGeneration")
-        } else {
-            ToastAndroid.show("Please fill all required fields", ToastAndroid.SHORT)
         }
     }
 
@@ -86,18 +102,18 @@ const QrDataForm = (props) => {
 
           <View style={styles.formContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.loginTitleText}>Enter Order Details</Text>
+            <Text style={styles.loginTitleText}>Enter  Details</Text>
                 <View style={styles.hr}></View>
 
-                    <View style={styles.inputView}>
-                    <Text style={styles.inputLabel}>Order Id </Text>
+                    <View style={[styles.inputView]}>
+                    <Text style={styles.inputLabel}>Account Number</Text>
                     <TextInput
-                    style={styles.input}
-                    placeholder="Order Id"
-                    keyboardType="default"
+                    style={[styles.input, {borderColor: !isValidAccountNo(account) && account.length>0?"red":"silver"}]}
+                    placeholder="xxxxxxxxxxxxx"
+                    keyboardType="decimal-pad"
                     textContentType="name"
                     onChangeText={(val) => {
-                        dataObj.orderId = val 
+                       setAccount(val)
                     }}
                     />
                 </View>
@@ -105,12 +121,12 @@ const QrDataForm = (props) => {
                     <View style={styles.inputView}>
                         <Text style={styles.inputLabel}>Amount </Text>
                         <TextInput
-                        style={styles.input}
+                        style={[styles.input,{borderColor: !isValidAmount(amount) && amount.length>0?"red":"silver"}]}
                         placeholder="Amount"
                         keyboardType="number-pad"
                         textContentType="name"
                         onChangeText={(val) => {
-                            dataObj.amount = val 
+                           setAmmount(val)
                         }}
                         />
                     </View>
@@ -118,12 +134,12 @@ const QrDataForm = (props) => {
                     <View style={styles.inputView}>
                         <Text style={styles.inputLabel}>Purpose </Text>
                         <TextInput
-                        style={styles.input}
+                        style={[styles.input,{borderColor: purpose && purpose.length<5?"red":"silver"}]}
                         placeholder="Purpose"
                         keyboardType="default"
                         textContentType="name"
                         onChangeText={(val) => {
-                            dataObj.purpose = val 
+                            setPurpose(val)
                         }}
                         />
                     </View>
@@ -208,9 +224,8 @@ const styles=StyleSheet.create({
       marginTop: 10,
       backgroundColor: 'white',
       marginHorizontal:20,
-      //borderWidth:1,
-      //borderColor: color.primary,
-      borderRadius: 4,
+     
+    
 
       
     
@@ -231,9 +246,8 @@ const styles=StyleSheet.create({
     color:"black",
    paddingHorizontal:20,
    marginTop:5,
-   
-  
-   
+   borderWidth:1,
+   borderColor:'silver',
     borderRadius: 4,
     shadowColor: 'gray',
 
@@ -244,7 +258,8 @@ const styles=StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 8.84,
   
-    elevation: 2,
+    elevation: 1,
+
   },
   contactButton:{
       justifyContent: 'center',

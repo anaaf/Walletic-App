@@ -13,7 +13,8 @@ import {
   Image,
   Button,
   BackHandler, 
-  Alert
+  Alert,
+  Modal
 } from 'react-native';
 import color from '../../colors/colors';
 import {CommonActions} from '@react-navigation/native';
@@ -24,16 +25,10 @@ import { useBackHandler, exitApp } from '@react-native-community/hooks'
 import {fetchBlanceInfo} from "../../redux/actions/blanceInfoActions"
 const HomeScreen = props => {
   // for testing purpose
-  const [userId, setUserId]=useState('');
-  const [token, setToken]=useState('');
-  const state = useSelector(state => state);
-
-
+ 
+  const state = useSelector(state => state); 
   const accountAllData =useSelector(state=>state.AccountInfo.accountData)
-
-  
-
-  console.log("finally blance is :",accountAllData)
+  const [accountInfoModalVisible, setAccountInfoModalVisible] = useState(false);
   // actual
 
   const nav = useNavigation();
@@ -67,30 +62,81 @@ const HomeScreen = props => {
   };
   useBackHandler(backActionHandler);
   //////////////////////////////////////////CALL API TO FETCH BLANCE ////////////////////////////////////////////////
- /* AsyncStorage.getItem('user_data')
-  .then(jsonValue => {
-    if (jsonValue != null) {
-      jsonValue = JSON.parse(jsonValue);
-      setUserId(jsonValue.user_id);
-      setToken(jsonValue.token);
-     console.log(jsonValue)
-     
-    }}
-    )
- 
-  
   useEffect(()=>{
-    const blanceHandler= async ()=>{
-      await dispatch(fetchBlanceInfo(userId, token));
-    
-    }
-    blanceHandler();
-  },
-  [])*/
+   
+    AsyncStorage.getItem('user_data')
+    .then(jsonValue => {
+      if (jsonValue != null) {
+        jsonValue = JSON.parse(jsonValue);
+       dispatch(fetchBlanceInfo(jsonValue.user_id, jsonValue.token));
+       
+      }}
+      )  
+  },[])
+
+
+console.log(accountAllData)
 
   return (
-    <View style={styles.container}>
-      {/* <Button onPress={log_out} title="logout" /> */}
+    <View style={[styles.container]}>
+      {/*//////////////////////////////// Account info modal //////////////////////////////////////////// */}
+      {accountInfoModalVisible==true?
+      <Modal
+                    animationType='fade'
+                    transparent={true}
+
+                    backgroundColor={"blue"}
+                    visible={accountInfoModalVisible}
+                    onRequestClose={() => {
+                        setAccountInfoModalVisible(!accountInfoModalVisible);
+
+
+                    }}>
+                      <View style={styles.modalContainer}>
+                       <View style={styles.modalBodyContainer}>
+                       
+
+                         <Text style={styles.modalTitle}>Account Info</Text>
+
+                  
+                            <View style={styles.textContainer}>
+
+                            <Text style={styles.modalLabel}>Account Holder </Text>
+                            <View style={styles.infotextContainer}>
+                            <Text style={[styles.modalText,{paddingLeft:15}]}>{accountAllData?accountAllData.fullname: null}</Text>
+                            </View>
+                            </View>
+                            <View style={styles.textContainer}>
+                                  
+                                  <Text style={styles.modalLabel}>Account Number </Text>
+                                  <View style={styles.infotextContainer}>
+                                  <Text style={styles.modalText}> +92 {accountAllData?accountAllData.phoneNo: null}</Text>
+                                  </View>
+                            </View>
+                            <View style={styles.textContainer}>
+                                 
+
+                                  <Text style={styles.modalLabel}>Account Type </Text>
+                                
+                                  <View style={styles.infotextContainer}>
+
+                                  <Text style={[styles.modalText,{paddingLeft:25}]}> {accountAllData?accountAllData.role: null}</Text>
+                                  </View>
+                            </View>
+
+                            <TouchableOpacity style={styles.modalClossButton}
+                            onPress={()=>setAccountInfoModalVisible(false)}>
+                              <Text style={[styles.modalLabel,{color:"white"}]}>Close</Text>
+                            </TouchableOpacity>
+                       </View>
+                      </View>
+                </Modal>
+                  :null}
+
+
+
+      {/*//////////////////////////////// Account info modal end //////////////////////////////////////////// */}
+
       <View style={styles.header}>
         <View style={{flex: 3}}>
           <View style={styles.topMenuContainer}>
@@ -137,6 +183,7 @@ const HomeScreen = props => {
           <View style={styles.blanceContainer}>
             <View style={styles.blanceSubContainer}>
 
+
               <Text style={styles.blanceText}>{accountAllData?accountAllData.fullname: null}</Text>
              
               <View style={{flexDirection:'row'}}>
@@ -148,12 +195,13 @@ const HomeScreen = props => {
             </View>
             <View style={styles.statementContainer}>
               <View style={styles.acccountDetailsContainer}>
-                <TouchableOpacity style={styles.infoButtons}>
-                  <Text style={styles.cartButtonText}>Share Account Info</Text>
+                <TouchableOpacity style={styles.infoButtons} onPress={()=>setAccountInfoModalVisible(true)}>
+                  <Text style={styles.cartButtonText}>View Account Info</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.transactionContainer}>
               <TouchableOpacity onPress={()=> props.navigation.navigate('statements')} style={styles.infoButtons}>
+
                   <Text style={styles.cartButtonText}>View Statements</Text>
                 </TouchableOpacity>
               </View>
@@ -163,7 +211,7 @@ const HomeScreen = props => {
           </View>
         </View>
       </View>
-      <View style={styles.featuresContainer}>
+      <View style={[styles.featuresContainer,{opacity: accountInfoModalVisible?0.5:1}]}>
         <HomeFeatures
           onTransferPress={() => props.navigation.navigate('transferForm')}
         />
@@ -310,7 +358,76 @@ userName:{
   color: 'white',
  // width: "80%",
   marginVertical:5
+},
+//////////////////////////////////// modal info style //////////////////////////
+modalContainer:{
+  flex:1,
+  justifyContent:'center',
+  alignContent:'center',
+  height:'50%',
+  width:'100%',
+  backgroundColor:'transparent',
+  alignItems:'center',
+  alignSelf:'center'
+},
+modalBodyContainer:{
+  backgroundColor:"#E7E2DD",
+  marginTop:50,
+  width:'90%',
+  justifyContent:'center',
+ 
+  paddingHorizontal:20,
+  paddingVertical:30,
+  borderRadius:5
+  
+
+},
+textContainer:{
+  
+  flexDirection:'row',
+  paddingHorizontal:5,
+  paddingVertical:3,
+  borderBottomWidth:1,
+  borderBottomColor:"silver",
+  marginBottom:10
+
+},
+modalTitle:{
+  textAlign:'center',
+  fontSize:RFValue(18),
+  fontWeight:'bold',
+  color:"#270667" ,
+  paddingBottom:20
+
+},
+
+modalLabel:{
+  fontSize:RFValue(13),
+  color:'#270667',
+  fontWeight:"900"
+},
+infotextContainer:{
+width:'70%', 
+alignItems:'flex-start',
+paddingLeft:20,
+},
+modalText:{
+  fontSize: RFValue(16),
+  paddingLeft:5,
+  color:color.primary
+},
+modalClossButton:{
+  justifyContent:'center',
+  alignItems:'center',
+  alignSelf:'center',
+  backgroundColor:color.primary,
+  borderRadius:30,
+  paddingVertical: 10,
+  marginTop:10,
+  width:'60%'
+
 }
+
 });
 
 export default HomeScreen;
