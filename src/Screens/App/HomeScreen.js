@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {logout} from '../../redux/actions/Auth';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,8 @@ import {
   Button,
   BackHandler, 
   Alert,
-  Modal
+  Modal,
+  ToastAndroid
 } from 'react-native';
 import color from '../../colors/colors';
 import {CommonActions} from '@react-navigation/native';
@@ -23,6 +24,8 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import HomeFeatures from '../../Components/HomeFeatures';
 import { useBackHandler, exitApp } from '@react-native-community/hooks'
 import {fetchBlanceInfo} from "../../redux/actions/blanceInfoActions"
+import CardFlip from 'react-native-card-flip';
+
 const HomeScreen = props => {
   // for testing purpose
  
@@ -30,7 +33,7 @@ const HomeScreen = props => {
   const accountAllData =useSelector(state=>state.AccountInfo.accountData)
   const [accountInfoModalVisible, setAccountInfoModalVisible] = useState(false);
   // actual
-
+  const flipcard =useRef();
   const nav = useNavigation();
   const dispatch = useDispatch();
   const log_out = async () => {
@@ -182,16 +185,27 @@ console.log(accountAllData)
           </View>
           <View style={styles.blanceContainer}>
             <View style={styles.blanceSubContainer}>
-
-
+            <CardFlip ref={flipcard} style={{height:"100%", width:'100%', alignSelf:'center',}}>
+            <TouchableOpacity onPress={()=>flipcard.current.flip()} style={{height:"100%",justifyContent:'center', alignContent:'center', alignItems:'center'}}>
+                <Text style={{color:color.primary, fontSize: RFValue(16)}}>Show Balance</Text>
+              </TouchableOpacity>
+              <View style={{justifyContent:'center',height:'100%', paddingVertical:15, paddingHorizontal:10}}>
+              <TouchableOpacity onPress={()=>flipcard.current.flip()} style={{alignContent:'flex-start', justifyContent:'flex-start', alignItems:'flex-start'}}>
+                <Text style={{color:color.primary , fontSize: RFValue(16)}}>Hide Balance</Text>
+              </TouchableOpacity>
+              <View style={{justifyContent:'center', alignItems:'center',alignSelf:'center' ,height:'100%'}}>
               <Text style={styles.blanceText}>{accountAllData?accountAllData.fullname: null}</Text>
              
               <View style={{flexDirection:'row'}}>
            
               <Text style={styles.RSText}>Rs </Text> 
 
+             
               <Text style={styles.totalAmount}>{accountAllData?accountAllData.balance: null}</Text>             
               </View>
+              </View>
+              </View>
+              </CardFlip>
             </View>
             <View style={styles.statementContainer}>
               <View style={styles.acccountDetailsContainer}>
@@ -214,6 +228,7 @@ console.log(accountAllData)
       <View style={[styles.featuresContainer,{opacity: accountInfoModalVisible?0.5:1}]}>
         <HomeFeatures
           onTransferPress={() => props.navigation.navigate('transferForm')}
+          onBillPress={()=>ToastAndroid.show("Available Soon", ToastAndroid.SHORT)}
         />
       </View>
     </View>

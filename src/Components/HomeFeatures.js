@@ -61,7 +61,7 @@ const HomeFeatures = props => {
                 </View>
                 <View style={styles.verticalLine}/>
                 <View style={styles.featureSubContainer}>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={props.onBillPress}>
                         <View style={styles.iconContainer}>
 
                             <Icon name='list' type='font-awesome' size={RFValue(35, 580)} color={'#1E3B6C'} style={styles.icon} />
