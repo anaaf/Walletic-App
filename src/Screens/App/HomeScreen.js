@@ -250,14 +250,13 @@ blanceContainer: {
     marginHorizontal: 20,
    // width: "90%",
     shadowColor: 'white',
-   
     shadowOffset: {
         width: 4,
         height: 5,
     },
     shadowOpacity: 0.25,
     shadowRadius: 6.54,
-
+    
     elevation: 1,
 
 

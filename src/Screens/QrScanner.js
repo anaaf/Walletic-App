@@ -18,7 +18,7 @@ import color from '../colors/colors';
 
     const state = useSelector(state => state.QrScannerReducer );
 
-    // console.log(state.qrData)
+     console.log(state)
 
     const onSuccess = e => {
       dispatch(onReadSuccess(e.data))

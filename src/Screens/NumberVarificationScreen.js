@@ -196,14 +196,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
      borderBottomLeftRadius:30,
      borderBottomRightRadius:30,
-     position:'relative'
-    
+     position:'relative',
+     padding:30
 
   },
   logo: {
     width: '70%',
     minHeight: "30%",
-    
     height: '40%',
   },
   bodyContainer:{
