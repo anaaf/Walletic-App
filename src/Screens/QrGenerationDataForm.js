@@ -26,13 +26,6 @@ import {qrDataFormCreate} from "../redux/actions/QrActions"
 const QrDataForm = () => {
 
 
-    const dataObj2 = {
-        orderId: 16272,
-        amount: 20000,
-        purpose: "hellow", 
-        walletId: phoneNumber
-    }
-
     const dataObj = {
         orderId: "",
         amount: "",
@@ -52,13 +45,13 @@ const QrDataForm = () => {
     const onSubmit = () => {
         console.log(dataObj)
         let isNull = false;
-        Object.entries(dataObj2).map((item) => {
+        Object.entries(dataObj).map((item) => {
             if(item[1] == "") {
                 isNull = true
             }
         })
 
-        if(!isNull) {
+        if(isNull) {
             ToastAndroid.show("success", ToastAndroid.SHORT)
             dispatch(qrDataFormCreate(dataObj))
             nav.navigate("QrGeneration")
