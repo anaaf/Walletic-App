@@ -8,7 +8,7 @@ import LottieView from 'lottie-react-native';
 
 
 
-const NotificationsScreen = (props) => {
+const StatementsScreen = (props) => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
@@ -17,15 +17,15 @@ const NotificationsScreen = (props) => {
                         <Icon  name='arrow-back' size={RFValue(30, 580)} color="white" style={styles.icon} />
                     </TouchableOpacity>
 
-                    <Text style={styles.notificationsheaderText}>Notifications</Text>
+                    <Text style={styles.notificationsheaderText}>Transaction History</Text>
 
                 </View>
                 <View style={styles.notificationsVContainer}>
                     <View style={styles.notificationIconContainer}>
 
-                        <Icon  name='notifications' size={RFValue(80, 580)} color="gray" style={styles.icon} />
+                        <Icon  name='list' size={RFValue(80, 580)} color="gray" style={styles.icon} />
                     </View>
-                    <Text style={styles.emptyText}>No Notifications Found!</Text>
+                    <Text style={styles.emptyText}>No Transactions History Found!</Text>
                 </View>
 
             </View>
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
 
 
 })
-export default NotificationsScreen;
+export default StatementsScreen;

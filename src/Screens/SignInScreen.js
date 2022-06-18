@@ -135,10 +135,13 @@ useBackHandler(backActionHandler);
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.headerSection}>
-            <Image
+            <View style={styles.lockContainer}>
+              <Icon name='lock' color={"white"} size={RFValue(50)}/>
+            </View>
+           {/* <Image
               source={require('../images/signin.png')}
               style={styles.logo}
-            />
+  />*/}
             <Text style={styles.welcomeText}>Sign In</Text>
           </View>
           <View style={styles.formContainer}>
@@ -265,8 +268,8 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingVertical:40,
     backgroundColor: color.primary,
-    borderBottomLeftRadius: 60,
-    borderBottomRightRadius: 60,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
 
   welcomeText: {
@@ -371,8 +374,18 @@ const styles = StyleSheet.create({
     borderRadius: 30,
    
 },
-
-
+lockContainer:{
+  backgroundColor:"#543295",
+  height: 100,
+  width: 100,
+  borderRadius: 100,
+   justifyContent:'center',
+   alignSelf:'center',
+   alignItems:'center',
+   borderWidth:2,
+   borderColor:'white'
+   
+}
 
 });
 

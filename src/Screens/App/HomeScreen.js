@@ -4,27 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {logout} from '../../redux/actions/Auth';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// const HomeScreen = () => {
-//   const state = useSelector(state => state);
-//   console.log(state);
-//   const nav = useNavigation();
-//   const dispatch = useDispatch();
-//   const log_out = async () => {
-//     dispatch(logout());
-//     await AsyncStorage.clear();
-//     nav.navigate('Login');
-//   };
-
-//   return (
-//     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//       <Button onPress={log_out} title="logout" />
-//       <Text>HomeScreen</Text>
-//     </View>
-//   );
-// };
-
-// export default HomeScreen;
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -33,7 +13,9 @@ import {
   Image,
   Button,
   BackHandler, 
-  Alert
+  Alert,
+  Modal,
+  ToastAndroid
 } from 'react-native';
 import color from '../../colors/colors';
 import {CommonActions} from '@react-navigation/native';
@@ -41,15 +23,17 @@ import Icon from 'react-native-ionicons';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import HomeFeatures from '../../Components/HomeFeatures';
 import { useBackHandler, exitApp } from '@react-native-community/hooks'
+import {fetchBlanceInfo} from "../../redux/actions/blanceInfoActions"
+import CardFlip from 'react-native-card-flip';
 
 const HomeScreen = props => {
   // for testing purpose
-
-  const state = useSelector(state => state);
-  console.log(state);
-
+ 
+  const state = useSelector(state => state); 
+  const accountAllData =useSelector(state=>state.AccountInfo.accountData)
+  const [accountInfoModalVisible, setAccountInfoModalVisible] = useState(false);
   // actual
-
+  const flipcard =useRef();
   const nav = useNavigation();
   const dispatch = useDispatch();
   const log_out = async () => {
@@ -80,16 +64,88 @@ const HomeScreen = props => {
     return true;
   };
   useBackHandler(backActionHandler);
-  //////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////CALL API TO FETCH BLANCE ////////////////////////////////////////////////
+  useEffect(()=>{
+   
+    AsyncStorage.getItem('user_data')
+    .then(jsonValue => {
+      if (jsonValue != null) {
+        jsonValue = JSON.parse(jsonValue);
+       dispatch(fetchBlanceInfo(jsonValue.user_id, jsonValue.token));
+       
+      }}
+      )  
+  },[])
+
+
+console.log(accountAllData)
+
   return (
-    <View style={styles.container}>
-      {/* <Button onPress={log_out} title="logout" /> */}
+    <View style={[styles.container]}>
+      {/*//////////////////////////////// Account info modal //////////////////////////////////////////// */}
+      {accountInfoModalVisible==true?
+      <Modal
+                    animationType='fade'
+                    transparent={true}
+
+                    backgroundColor={"blue"}
+                    visible={accountInfoModalVisible}
+                    onRequestClose={() => {
+                        setAccountInfoModalVisible(!accountInfoModalVisible);
+
+
+                    }}>
+                      <View style={styles.modalContainer}>
+                       <View style={styles.modalBodyContainer}>
+                       
+
+                         <Text style={styles.modalTitle}>Account Info</Text>
+
+                  
+                            <View style={styles.textContainer}>
+
+                            <Text style={styles.modalLabel}>Account Holder </Text>
+                            <View style={styles.infotextContainer}>
+                            <Text style={[styles.modalText,{paddingLeft:15}]}>{accountAllData?accountAllData.fullname: null}</Text>
+                            </View>
+                            </View>
+                            <View style={styles.textContainer}>
+                                  
+                                  <Text style={styles.modalLabel}>Account Number </Text>
+                                  <View style={styles.infotextContainer}>
+                                  <Text style={styles.modalText}> +92 {accountAllData?accountAllData.phoneNo: null}</Text>
+                                  </View>
+                            </View>
+                            <View style={styles.textContainer}>
+                                 
+
+                                  <Text style={styles.modalLabel}>Account Type </Text>
+                                
+                                  <View style={styles.infotextContainer}>
+
+                                  <Text style={[styles.modalText,{paddingLeft:25}]}> {accountAllData?accountAllData.role: null}</Text>
+                                  </View>
+                            </View>
+
+                            <TouchableOpacity style={styles.modalClossButton}
+                            onPress={()=>setAccountInfoModalVisible(false)}>
+                              <Text style={[styles.modalLabel,{color:"white"}]}>Close</Text>
+                            </TouchableOpacity>
+                       </View>
+                      </View>
+                </Modal>
+                  :null}
+
+
+
+      {/*//////////////////////////////// Account info modal end //////////////////////////////////////////// */}
+
       <View style={styles.header}>
         <View style={{flex: 3}}>
           <View style={styles.topMenuContainer}>
             <TouchableOpacity>
               <Icon
-                color="#333"
+               
                 name="menu"
                 type="font-awesome"
                 size={RFValue(20, 580)}
@@ -103,9 +159,9 @@ const HomeScreen = props => {
               style={styles.logo}
             />
 
-            <TouchableOpacity onPress={()=>props.navigation.navigate('notifications')} >
+            <TouchableOpacity onPress={()=> props.navigation.navigate('notifications')} >
               <Icon
-                color="#333"
+               
                 name="notifications"
                 type="font-awesome"
                 size={RFValue(20, 580)}
@@ -118,7 +174,7 @@ const HomeScreen = props => {
 
             <TouchableOpacity onPress={log_out}>
               <Icon
-                color="#333"
+               
                 name="log-out"
                 type="font-awesome"
                 size={RFValue(20, 580)}
@@ -129,34 +185,50 @@ const HomeScreen = props => {
           </View>
           <View style={styles.blanceContainer}>
             <View style={styles.blanceSubContainer}>
-              <Text style={styles.blanceText}>Balance</Text>
-              <Text style={styles.totalAmount}>Rs 129343343.54</Text>
-              
-            </View>
-            <View style={styles.addContainer}>
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Icon
-                  color="#333"
-                  name="add"
-                  type="font-awesome"
-                  size={30}
-                  color="white"
-                  padding={10}
-                />
+            <CardFlip ref={flipcard} style={{height:"100%", width:'100%', alignSelf:'center',}}>
+            <TouchableOpacity onPress={()=>flipcard.current.flip()} style={{height:"100%",justifyContent:'center', alignContent:'center', alignItems:'center'}}>
+                <Text style={{color:color.primary, fontSize: RFValue(16)}}>Show Balance</Text>
               </TouchableOpacity>
+              <View style={{justifyContent:'center',height:'100%', paddingVertical:15, paddingHorizontal:10}}>
+              <TouchableOpacity onPress={()=>flipcard.current.flip()} style={{alignContent:'flex-start', justifyContent:'flex-start', alignItems:'flex-start'}}>
+                <Text style={{color:color.primary , fontSize: RFValue(16)}}>Hide Balance</Text>
+              </TouchableOpacity>
+              <View style={{justifyContent:'center', alignItems:'center',alignSelf:'center' ,height:'100%'}}>
+              <Text style={styles.blanceText}>{accountAllData?accountAllData.fullname: null}</Text>
+             
+              <View style={{flexDirection:'row'}}>
+           
+              <Text style={styles.RSText}>Rs </Text> 
+
+             
+              <Text style={styles.totalAmount}>{accountAllData?accountAllData.balance: null}</Text>             
+              </View>
+              </View>
+              </View>
+              </CardFlip>
             </View>
+            <View style={styles.statementContainer}>
+              <View style={styles.acccountDetailsContainer}>
+                <TouchableOpacity style={styles.infoButtons} onPress={()=>setAccountInfoModalVisible(true)}>
+                  <Text style={styles.cartButtonText}>View Account Info</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.transactionContainer}>
+              <TouchableOpacity onPress={()=> props.navigation.navigate('statements')} style={styles.infoButtons}>
+
+                  <Text style={styles.cartButtonText}>View Statements</Text>
+                </TouchableOpacity>
+              </View>
+
+            </View >
+          
           </View>
         </View>
       </View>
-      <View style={styles.featuresContainer}>
+      <View style={[styles.featuresContainer,{opacity: accountInfoModalVisible?0.5:1}]}>
         <HomeFeatures
           onTransferPress={() => props.navigation.navigate('transferForm')}
+          onBillPress={()=>ToastAndroid.show("Available Soon", ToastAndroid.SHORT)}
         />
       </View>
     </View>
@@ -166,7 +238,8 @@ const HomeScreen = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: '#F5F8F8'
+    backgroundColor: '#F5F8F8',
+    backgroundColor:'white'
 
 },
 header: {
@@ -177,7 +250,7 @@ header: {
 
 },
 topMenuContainer: {
-    flex: 1,
+    flex: 1.5,
     flexDirection: 'row',
     //backgroundColor: "pink",
     justifyContent: 'space-between',
@@ -185,12 +258,10 @@ topMenuContainer: {
 
 },
 blanceContainer: {
-    flex: 2,
-    backgroundColor: "#8e00eb",
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flex: 6,
+    backgroundColor:color.primary,
+    flexDirection: 'column',
+    justifyContent: 'center',
     marginHorizontal: 20,
    // width: "90%",
     shadowColor: 'white',
@@ -200,40 +271,85 @@ blanceContainer: {
     },
     shadowOpacity: 0.25,
     shadowRadius: 6.54,
-
+    
     elevation: 1,
 
 
 },
 blanceSubContainer: {
-    // backgroundColor: 'blue',
-    margin: 20,
-    width: '70%'
+  flex:4,
+  justifyContent:'center',
+  alignContent:'center',
+  alignItems:'center',
+  borderTopRightRadius:5,
+  borderTopStartRadius:5,
+ 
+     backgroundColor: 'white',
+  //  marginBottom: 10,
+    width: '100%'
 
+},
+
+statementContainer:{
+   flex:2,
+   flexDirection:'row',
+  
+},
+acccountDetailsContainer:{
+  flex:1, 
+  backgroundColor:'#5403AB',
+  borderWidth:2,
+  borderRightWidth:0,
+  borderLeftWidth:0,
+  borderBottomWidth:0,
+  borderColor:'silver'
+
+},
+transactionContainer:{
+  flex:1, 
+  backgroundColor:'#5403AB',
+  borderWidth:2,
+  borderRightWidth:0,
+  borderBottomWidth:0,
+  borderColor:'silver'
+  
+},
+infoButtons:{
+  height:"100%",
+  width:"100%",
+  justifyContent:'center',
+  alignItems:"center",
+  alignSelf: 'center'
+
+},
+cartButtonText:{
+  color:"white",
+  fontSize: RFValue(16)
+
+},
+RSText:{
+color:color.primary,
+alignSelf:'center',
+fontWeight:'500', 
+fontSize: RFValue(16)
 },
 featuresContainer: {
     flex: 4,
     flexDirection: 'row',
     //  backgroundColor: 'white',
   },
-  logo: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-   
-
-},
+ 
 blanceText: {
-    fontSize: 16,
+    fontSize: RFValue(18),
     fontWeight: '800',
-    color: '#C8C8C8',
+    color: 'black',
 
 },
 totalAmount: {
-    fontSize: RFValue(18, 580),
-    color: 'white',
-    marginTop: 20,
-    fontWeight: '900',
+    fontSize: RFValue(20),
+    color: 'black',
+   // marginTop: 20,
+    fontWeight: '600',
    // width: "70%"
 
 },
@@ -248,15 +364,84 @@ addContainer: {
 },
 
 logo: {
-    width: '70%',
-    height: '80%',
+    width: RFValue(120),
+    height: RFValue(40),
 },
 userName:{
   fontSize: RFValue(16, 580),
   color: 'white',
  // width: "80%",
   marginVertical:5
+},
+//////////////////////////////////// modal info style //////////////////////////
+modalContainer:{
+  flex:1,
+  justifyContent:'center',
+  alignContent:'center',
+  height:'50%',
+  width:'100%',
+  backgroundColor:'transparent',
+  alignItems:'center',
+  alignSelf:'center'
+},
+modalBodyContainer:{
+  backgroundColor:"#E7E2DD",
+  marginTop:50,
+  width:'90%',
+  justifyContent:'center',
+ 
+  paddingHorizontal:20,
+  paddingVertical:30,
+  borderRadius:5
+  
+
+},
+textContainer:{
+  
+  flexDirection:'row',
+  paddingHorizontal:5,
+  paddingVertical:3,
+  borderBottomWidth:1,
+  borderBottomColor:"silver",
+  marginBottom:10
+
+},
+modalTitle:{
+  textAlign:'center',
+  fontSize:RFValue(18),
+  fontWeight:'bold',
+  color:"#270667" ,
+  paddingBottom:20
+
+},
+
+modalLabel:{
+  fontSize:RFValue(13),
+  color:'#270667',
+  fontWeight:"900"
+},
+infotextContainer:{
+width:'70%', 
+alignItems:'flex-start',
+paddingLeft:20,
+},
+modalText:{
+  fontSize: RFValue(16),
+  paddingLeft:5,
+  color:color.primary
+},
+modalClossButton:{
+  justifyContent:'center',
+  alignItems:'center',
+  alignSelf:'center',
+  backgroundColor:color.primary,
+  borderRadius:30,
+  paddingVertical: 10,
+  marginTop:10,
+  width:'60%'
+
 }
+
 });
 
 export default HomeScreen;

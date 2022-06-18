@@ -27,6 +27,7 @@ import {verifyPhone} from '../redux/actions/Auth';
 import {set} from 'react-native-reanimated';
 const dew_Height = Dimensions.get('window').height;
 const dew_Width = Dimensions.get('window').width;
+import {baseUrl} from '../Api/BaseUrl'
 
 const intialState = {
   message: '',
@@ -97,6 +98,10 @@ const NumberVarificationScreen = (props) => {
 };
 useBackHandler(backActionHandler);
 ////////////////////////////////////////////////////////////////////////////
+useEffect(()=>{
+  fetch(baseUrl).then(data=> data.json()).then(value=>console.log(value))
+
+})
   return (
     <TouchableWithoutFeedback accessible={false}>
       <View style={styles.container}>
@@ -104,26 +109,31 @@ useBackHandler(backActionHandler);
           <Image source={require('../images/logo1.png')} style={styles.logo} />
         </View>
 
-        <View style={{flex: 2, backgroundColor: 'white'}}>
+        <View style={styles.bodyContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.getText}>Get Started</Text>
             <Text style={styles.text}>Enter Your Mobile Number</Text>
-           
+
+            <View   style={styles.mobileNumberContainer}>
+            <View style={{flexDirection:'row'}}>
+          
+              <Text  style={styles.input}>+92</Text>
+            </View>
             <TextInput
               //onChangeText={}
               type="number"
               keyboardType="numeric"
-              placeholder={'3XX-XXXXXXX'}
+              placeholder={'XXXXXXXXXX'}
               required
               autoFocus={true}
-              placeholderTextColor="#D5D5D5"
+              placeholderTextColor="gray"
               style={styles.input}
               value={phoneNo}
               onChangeText={setPhoneNo}
               maxLength={10}
 
             />
-           
+           </View>
               <TouchableOpacity style={styles.button} onPress={onSubmit}>
                 <View
                   style={{
@@ -137,13 +147,13 @@ useBackHandler(backActionHandler);
                   <Text style={styles.buttonText}>Next</Text>
                   <Icon
                     name="arrow-right"
-                    size={RFValue(16, 580)}
+                    size={RFValue(20, 580)}
                     color="white"
                   /></>
                   )}
                 </View>
               </TouchableOpacity>
-            <Text style={styles.haveAccountText}>If allready have an account ?</Text>
+            <Text style={styles.haveAccountText}>If already have an account ?</Text>
             <TouchableOpacity
               style={{...styles.button}}
               onPress={() => nav.navigate('Login')}>
@@ -156,7 +166,7 @@ useBackHandler(backActionHandler);
                 <Text style={styles.buttonText}>Login</Text>
                 <Icon
                   name="user"
-                  size={RFValue(16, 580)}
+                  size={RFValue(20, 580)}
                   color="white"
                 />
               </View>
@@ -171,18 +181,36 @@ useBackHandler(backActionHandler);
 const styles = StyleSheet.create({
   container: {
     flex: 3,
+    backgroundColor:'white',
+    position:'relative',
+  
   },
   header: {
-    flex: 1,
+    flex:1,
+    width:'100%',
     backgroundColor: color.primary,
     justifyContent: 'center',
+    textAlign: 'center',
     alignItems: 'center',
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    alignContent: 'center',
+    flexDirection: 'row',
+     borderBottomLeftRadius:30,
+     borderBottomRightRadius:30,
+     position:'relative',
+     padding:30
+
   },
   logo: {
-    width: '80%',
-    height: '70%',
+    width: '70%',
+    minHeight: "30%",
+    height: '40%',
+  },
+  bodyContainer:{
+    flex: 2,
+    width:'100%',
+     backgroundColor: 'white', 
+     justifyContent:'center', 
+     alignSelf:'center'
   },
   getText: {
     fontSize: RFValue(25, 580),
@@ -193,30 +221,35 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: RFValue(13, 580),
-    color: 'gray',
+    color: 'black',
     fontWeight: '700',
     textAlign: 'center',
   },
-  input: {
-    //justifyContent: 'center',
-   // alignSelf: 'center',
-    //alignContent: 'center',
-   // alignItems: 'center',
-    //textAlign: 'center',
-    width: '60%',
+  mobileNumberContainer:{
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
+    alignContent:'center',
+    width: '90%',
     height: RFValue(45, 580),
-    fontSize: RFValue(10, 580),
     paddingHorizontal:30,
-    //borderWidth: 1,
+  
     backgroundColor: '#E1E1F5',
     borderRadius: 30,
     fontSize: RFValue(20, 580),
     alignSelf: 'center',
-    //textAlign: 'center',
+    textAlign:'center',
+  
     color: 'black',
     borderWidth: 0.5,
     marginVertical:10,
-   // paddingHorizontal: 10,
+
+  },
+  input: {
+     fontSize: RFValue(16),
+    color: 'black',
+   
+  
   },
 
   button: {
@@ -224,7 +257,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     backgroundColor: color.primary,
-    width: '60%',
+    width: '90%',
     height: RFValue(45, 580),
     alignItems: 'center',
     justifyContent: 'center',
@@ -245,7 +278,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12, 580),
     fontWeight:'bold',
     paddingTop:20,
-    color: 'gray',
+    color: 'black',
     alignSelf: 'center'
   }
 });

@@ -319,8 +319,8 @@ headerSection: {
   alignItems: 'center',
   paddingTop: 15,
   backgroundColor: color.primary,
-  borderBottomLeftRadius: 60,
-  borderBottomRightRadius: 60,
+  borderBottomLeftRadius: 30,
+  borderBottomRightRadius: 30,
 },
 
   welcomeText: {

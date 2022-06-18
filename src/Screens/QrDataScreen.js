@@ -16,29 +16,29 @@ const QrDataScreen = (props) => {
 
     const data = JSON.parse(JSON.parse(qrDataState));
 
+
     return (
         <View style = {styles.container}>
             <View style={styles.headerContainer}>
-            <TouchableOpacity style={{padding:20}} onPress={()=>props.navigation.goBack(null)}>
-                        <Icon color='#333' name='arrow-back'  size={RFValue(30, 580)} color="white" style={styles.icon} />                
+            <TouchableOpacity style={{paddingLeft:20}} onPress={()=>props.navigation.goBack(null)}>
+                        <Icon  name='arrow-back'  size={RFValue(30)} color="white" style={styles.icon} />                
                     </TouchableOpacity>
-                    <Image source={require('../images/logo1.png')} style={styles.logo} />
+                    <Text style={styles.headerText}>Receiver Information</Text>
             </View>
             <View style={styles.detailContainer}>
             <View style= {styles.details}>
-                <Text style={styles.inputLabel}> Order Id</Text>
-                <Text style={styles.text}>{data.orderID}</Text>
-                <Text style={styles.inputLabel}> Wallet Id</Text>
-                <Text  style={styles.text}>{data.walletID}</Text>
-                <Text style={styles.inputLabel}>Invoice Amount</Text>
-                <Text  style={styles.text}>{data.invoiceAmount}</Text>
-                <Text style={styles.inputLabel}>Reciever Account</Text>
-                <Text  style={styles.text}>{data.recieverID}</Text>
+                <Text style={styles.inputLabel}>Receiver Account Number</Text>
+                <Text style={styles.text}>{data.orderId}</Text>
+
+                <Text style={styles.inputLabel}>Amount</Text>
+                <Text  style={styles.text}>{data.amount}</Text>
+                <Text style={styles.inputLabel}>Purpose</Text>
+                <Text  style={styles.text}>{data.purpose}</Text>
             </View>
             <View style= {styles.btnView}>
                 
             <TouchableOpacity style={styles.sendButton}>
-                            <Text style={styles.sendText}>Pay Now</Text>
+                            <Text style={styles.sendText}>Transfer Now</Text>
                         </TouchableOpacity>
             </View>
             </View>
@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
         
       },
       details: {
-         // backgroundColor:'blue',
-          alignItems: 'center',
-         
-          //justifyContent: 'center',
-         // borderWidth: 2,
-         // borderColor: '#000000',
+         width:'90%',
+
+         justifyContent:'center',
+         alignContent:'center',
+         alignSelf:'center',
+          paddingVertical:20,
           flex: 0.5,
-          marginVertical: '10%',
+         marginVertical:30
 
       }, 
      
@@ -84,6 +84,16 @@ const styles = StyleSheet.create({
   
 
     },
+    headerText:{
+        fontSize: RFValue(18),
+        fontWeight:'900',
+        color:'white',
+        textAlign:'center',
+        width:'100%',
+        
+
+
+    },
     btnView:{
         marginVertical:20
 
@@ -101,10 +111,10 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           justifyContent: 'center',
           alignContent: 'center',
-        height: RFValue(45, 580),
-        backgroundColor: 'green',
+        height: RFValue(45),
+        backgroundColor: color.primary,
         marginVertical: 30,
-        width: "80%",
+        width: "90%",
       //  marginHorizontal:20,
        
         paddingVertical: 10,
@@ -113,20 +123,23 @@ const styles = StyleSheet.create({
 
     },
     inputLabel: {
-        fontSize: RFValue(14, 580),
+        fontSize: RFValue(14),
         marginTop: 6,
-        marginHorizontal:20,
-        fontWeight: 'bold',
-        color: 'black',marginVertical:10
+        fontWeight: '600',
+        color: 'black',marginVertical:10,
+        paddingTop:5
     },
     text:{
-        fontSize: RFValue(13, 580),
+        fontSize: RFValue(14),
         backgroundColor: 'white',
-        textAlign: 'center',
+        paddingLeft:20,
+        color:'black',
         paddingVertical:10,
         paddingHorizontal:5,
-        width: "80%",
+        width: "100%",
         borderRadius:4,
+        borderWidth:1,
+        borderColor:'silver',
        fontWeight: '500',
         shadowOffset: {
           width: 0,
@@ -141,13 +154,10 @@ const styles = StyleSheet.create({
       sendText: {
         color: '#fff',
         textAlign: 'center',
-        fontSize: RFValue(14, 580),
+        fontSize: RFValue(14),
         fontWeight: 'bold',
     },
-    logo: {
-        width: '80%',
-        height: '70%',
-      },
+   
 
   
 })

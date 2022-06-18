@@ -1,36 +1,96 @@
-import React from "react";
-import { View, Text,StyleSheet,TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, Image } from "react-native";
+import React, {useRef, useState} from "react";
+import { View, Text,StyleSheet,TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, Image, Alert, ActivityIndicator } from "react-native";
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon from "react-native-ionicons";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import color from "../colors/colors";
 import LottieView from 'lottie-react-native';
-
-
+import {Picker} from '@react-native-picker/picker';
+import { useDispatch, useSelector } from 'react-redux';
+import { TransferAmount } from "../redux/actions/TransactionsActions";
 
 const TransferFormScreen=(props)=>{
+    const dispatch=useDispatch();
+    const [purpose, setPurpose] = useState('Select');
+    const [accountNo, setAccountNo] = useState('');
+    const [amount, setAmount] = useState('');
+    const [loading, setLoading]=useState(false);
+    
+    const pickerRef = useRef();
+    
+    console.log(amount)
+
+ function isValidAccountNo(accountNo) {
+    const re = /^[-,0-9 ]+$/
+    return re.test(String(accountNo))
+  }
+  
+
+  function isValidAmount(amount) {
+    const re = /^[-,0-9 ]+$/
+    return re.test(String(amount))
+  }
+  /////////////////////////////////////// senHandler ////////////////////////////////////////////////
+  const sendHandler = async () =>{
+    if(!isValidAccountNo(accountNo) || !isValidAmount(amount) || purpose=="Select"){
+        Alert.alert(
+            "Invalid Data!",
+            "Please enter valid data and try again",
+            [
+              
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          );
+    }
+    else{
+        try {
+            setLoading(true);
+            const status = await dispatch(
+              TransferAmount(accountNo, amount,purpose)
+             
+            );
+           
+            if (status) {
+              setLoading(false);
+            }
+          } catch (err) {
+            setLoading(false);
+            return Alert.alert('Transfer Failed!', err.message, [
+              { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ]);
+    }
+
+  }
+}
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-            <View style={styles.headerContainer}>
-            <TouchableOpacity style={{padding:20}} onPress={()=>props.navigation.goBack(null)}>
-                        <Icon color='#333' name='arrow-back'  size={RFValue(30, 580)} color="white" style={styles.icon} />                
-                    </TouchableOpacity>
-                    <Image source={require('../images/logo1.png')} style={styles.logo} />
-            </View>
+
+        <View  style={styles.headerContainer}>
+         
+         <TouchableOpacity  onPress={()=>props.navigation.navigate("Home")}>
+                       <Icon  name='arrow-back'  size={RFValue(30, 580)} color="white" style={styles.icon} />                
+                   </TouchableOpacity>
+                  
+                   <View style={{justifyContent:'center', width:'100%'}}>
+               <Text style={styles.headerText}>Transfer Details</Text>
+               </View>
+         </View>
 
 
             <View style={styles.formContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.inputLabel}>Receiver Account  Number</Text>
-            <View style={styles.inputView}>
+            <View style={[styles.inputView,{borderWidth:1, borderColor: !isValidAccountNo(accountNo) && accountNo.length>0?"red":"silver", borderTopRightRadius:0,
+        borderBottomRightRadius:0, }]}>
                                
                             <TextInput
-                                style={styles.input}
-                                placeholder='03XX-XXXXXXX'
+                                style={[styles.input]}
+                                placeholder='03XXXXXXXXX'
                                 textContentType='password'
                                 autoFocus={true}
                                 keyboardType='numeric'
+                                onChangeText={(value)=>setAccountNo(value)}
                             />
                              <TouchableOpacity 
                                         style={styles.contactButton}
@@ -47,10 +107,10 @@ const TransferFormScreen=(props)=>{
                       
                      
                             <Text style={styles.inputLabel}>Amount</Text>
-                            <View style={styles.inputView}>
+                            <View style={[styles.inputView,{borderWidth:1, borderColor: !isValidAmount(amount) && amount.length>0?"red":"silver",}]}>
                             <TextInput
                                 style={styles.input}
-                               
+                                onChangeText={(value)=>setAmount(value)}
                                 placeholder='Enter Amount in PKR'
                                 keyboardType='numeric'
                                
@@ -59,18 +119,27 @@ const TransferFormScreen=(props)=>{
                             
                </View>
                <Text style={styles.inputLabel}>Purpose</Text>
-               <View style={styles.purposeInput}>
-                            <TextInput
-                                style={styles.input}
-                                secureTextEntry={true}
-                                placeholder=' Sending purpose..'
-                                multiline={true}
-                            />
+               <View style={styles.dropDownStyle}>
+               <Picker
+                ref={pickerRef}
+                mode='dropdown'
+                selectedValue={purpose}
+                onValueChange={(itemValue, itemIndex) => setPurpose(itemValue)}>
+                <Picker.Item label="Select" value="Select"  color="gray" paddingHorizontal={20}/>
+                <Picker.Item label="Education" value="Education" />
+                <Picker.Item label="Business" value="Business" />
+                <Picker.Item label="Loan" value="Loan" />
+                <Picker.Item label="Other" value="Other" />
+              </Picker>
                             
                </View>
                        
-                         <TouchableOpacity style={styles.sendButton}>
+                         <TouchableOpacity style={styles.sendButton} onPress={sendHandler}>
+                            {loading?
+                              <ActivityIndicator size="small" color="white" />:
+                            
                             <Text style={styles.sendText}>Send</Text>
+                            }
                         </TouchableOpacity>
              </ScrollView>           
             </View>
@@ -89,18 +158,17 @@ const styles=StyleSheet.create({
     },
 
     headerContainer:{
-        flex: 1,
-        backgroundColor: color.primary,
-        justifyContent: 'space-between',
-        textAlign: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
-        flexDirection: 'row',
-         paddingRight:20,
-      
        
-       // width: '100%',
-      
+      backgroundColor: color.primary,
+      justifyContent: 'space-between',
+      textAlign: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      flexDirection: 'row',
+       paddingRight:20,
+       paddingHorizontal:20,
+       paddingVertical:20
+    
   
 
     },
@@ -119,19 +187,47 @@ const styles=StyleSheet.create({
      
     },
     headerText:{
-      fontSize: RFValue(20, 580),
-      fontWeight:'bold',
-      color: '#8F490F',
-      textAlign: 'center',
-    },
+        fontSize: RFValue(18),
+       
+        width:'100%',
+        fontWeight:'bold',
+        alignSelf:'center',
+        color: 'white',
+        textAlign: 'center',
+      },
 
   
     
     inputView:{
         width: '90%',
-        height: RFValue(45, 580),
+        height: RFValue(45),
         flexDirection: 'row',
         justifyContent: 'space-between',
+      // justifyContent: 'flex-start',
+        marginTop: 10,
+        backgroundColor: 'white',
+        marginHorizontal:20,
+        //borderWidth:1,
+        //borderColor: color.primary,
+        borderRadius: 4,
+       
+
+        
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 8.84,
+      
+        elevation: 10,
+
+
+       
+    },
+    dropDownStyle:{
+        height: RFValue(45),
+        justifyContent: 'center',
       // justifyContent: 'flex-start',
         marginTop: 10,
         backgroundColor: 'white',
@@ -151,19 +247,19 @@ const styles=StyleSheet.create({
         elevation: 10,
 
 
-       
     },
     inputLabel: {
-        fontSize: RFValue(14, 580),
+        fontSize: RFValue(16),
         marginTop: 6,
         marginHorizontal:20,
-        fontWeight: 'bold',
+        fontWeight: '600',
         color: 'black'
     },
     input: {
-        fontSize:RFValue(14, 580),
-        height: RFValue(45, 580),
+        fontSize:RFValue(16),
+        height: RFValue(45),
         paddingHorizontal: 20,
+        color:"black",
 
     },
    
@@ -212,8 +308,8 @@ const styles=StyleSheet.create({
     sendButton: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: RFValue(45, 580),
-        backgroundColor: 'green',
+        height: RFValue(45),
+        backgroundColor:color.primary,
         marginTop: 20,
 
         marginHorizontal:20,
@@ -235,7 +331,7 @@ const styles=StyleSheet.create({
     sendText: {
         color: '#fff',
         textAlign: 'center',
-        fontSize: RFValue(14, 580),
+        fontSize: RFValue(14),
         fontWeight: 'bold',
     },
 })
