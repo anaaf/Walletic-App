@@ -14,6 +14,9 @@ import App1 from './App1';
 import QrDataScreen from './src/Screens/QrDataScreen';
 import color from './src/colors/colors';
 import AccountInfo from './src/redux/reducers/AccountInfoReducer';
+import receiverInformation from './src/redux/reducers/TransferInfoReducer'
+import HomeScreen from './src/Screens/App/HomeScreen';
+
 //import store1 from './Playground/Redux/Store' // pg
 
 //combining the reducers
@@ -23,7 +26,8 @@ const reducers = combineReducers({
   QrDataSaveReducer,
   modalReducer,
   QRCodeGenerationReducer,
-  AccountInfo
+  AccountInfo,
+  receiverInformation,
 });
 const store = createStore(reducers, applyMiddleware(thunk));
 
@@ -33,7 +37,8 @@ export default function App() {
     <Provider store={store}>
      <StatusBar backgroundColor={color.primary}/>
      <Navigation />
-      {/* <App1 /> */}
+  
+           {/* <App1 /> */}
      
     </Provider>
   );
