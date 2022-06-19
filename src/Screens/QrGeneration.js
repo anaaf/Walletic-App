@@ -25,6 +25,7 @@ const App = (props) => {
   
  
  const qrDataState = useSelector(state => state.QRCodeGenerationReducer.orderDetails)
+ const account_id = useSelector(state =>  state.AccountInfo.accountData.account_id)
 
  console.log(qrDataState)
 

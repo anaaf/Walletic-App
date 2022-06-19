@@ -1,21 +1,42 @@
 
-import {View,  Text,  StyleSheet, Dimensions, Button, Modal, Pressable,Image, TouchableOpacity} from 'react-native'
+import {ToastAndroid, View,  Text,  StyleSheet, Dimensions, Button, Modal, Pressable,Image, TouchableOpacity} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 import {onReadSuccess, ModalToggle} from  '../redux/actions/QrActions' 
 import React from 'react';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import Icon from "react-native-ionicons";
 import color from "../colors/colors";
+import axios from 'axios';
+import { baseUrl } from '../Api/BaseUrl';
+import { askAndroid } from 'react-native-clean-project/source/internals/options';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
 const QrDataScreen = (props) => {
-
-    const dispatch = useDispatch();
-
-    // const qrScannerState = useSelector(state => state.QrScannerReducer)
-
-    const qrDataState  = useSelector(state => state.QrScannerReducer.qrData)
-
-    const data = JSON.parse(JSON.parse(qrDataState));
-
+    
+        const dispatch = useDispatch();
+        
+        const qrDataState  = useSelector(state => state.QrScannerReducer.qrData)
+        const data = JSON.parse(JSON.parse(qrDataState));
+        const sender_id = useSelector(state => state.AccountInfo.accountData.account_id);
+        const {reciever_id, amount} = data
+    
+        const transferBtnHandler = (reciever_id, sender_id, invoiceAmt) => {
+            if(sender_id == reciever_id) {
+                ToastAndroid.show("user and reciever cant be same", ToastAndroid.LONG)
+            }
+            axios.post(`${baseUrl}/api/account/walleticToWalletic`, { 
+                 data: {
+                    sender_id: sender_id,
+                    reciever_id: reciever_id,
+                    amount: invoiceAmt
+                }
+            }).then((req, res) => {
+                console.log(res)
+                //  ToastAndroid.SHORT(res.message)
+            }).catch((err) => {
+                console.log(err.message)
+                // ToastAndroid.SHORT(err.message)
+            }); 
+        }
 
     return (
         <View style = {styles.container}>
@@ -37,7 +58,9 @@ const QrDataScreen = (props) => {
             </View>
             <View style= {styles.btnView}>
                 
-            <TouchableOpacity style={styles.sendButton}>
+            <TouchableOpacity style={styles.sendButton} onPress = {()=> {
+                transferBtnHandler(reciever_id , sender_id, amount);
+            }}>
                             <Text style={styles.sendText}>Transfer Now</Text>
                         </TouchableOpacity>
             </View>

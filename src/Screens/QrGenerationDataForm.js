@@ -26,24 +26,28 @@ import Icon from "react-native-ionicons";
 
 const QrDataForm = (props) => {
 
+  const account_id = useSelector(state =>  state.AccountInfo.accountData.account_id)
+
 const [account, setAccount]=useState('');
 const [amount, setAmmount]=useState('');
 const [purpose, setPurpose]=useState('');
+
     const dataObj2 = {
         orderId: 16272,
         amount: 20000,
         purpose: "hellow", 
-        walletId: phoneNumber
+        walletId: phoneNumber,
+
     }
 
     const dataObj = {
         orderId: account,
         amount: amount,
         purpose: purpose, 
-       // walletId: phoneNumber
+       reciever_id: account_id 
     }
  
-    console.log(dataObj)
+    console.log(dataObj.reciever_id)
     const dispatch = useDispatch();
 
     const nav = useNavigation()
@@ -75,6 +79,10 @@ function isValidAccountNo(account) {
                   { text: "OK", onPress: () => console.log("OK Pressed") }
                 ]
               );
+              
+          // setting account_id as reciever id preemptly
+
+            // setRecieverId(account_id)
         }
 
       else {
