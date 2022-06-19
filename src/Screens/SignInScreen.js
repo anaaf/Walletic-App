@@ -136,7 +136,7 @@ useBackHandler(backActionHandler);
         <View style={styles.container}>
           <View style={styles.headerSection}>
             <View style={styles.lockContainer}>
-              <Icon name='lock' color={"white"} size={RFValue(50)}/>
+              <Icon name='lock' color={color.primary} size={RFValue(70)}/>
             </View>
            {/* <Image
               source={require('../images/signin.png')}
@@ -375,15 +375,15 @@ const styles = StyleSheet.create({
    
 },
 lockContainer:{
-  backgroundColor:"#543295",
-  height: 100,
-  width: 100,
+  backgroundColor:"white",
+  height: dew_Height/6,
+  width:  dew_Height/6,
   borderRadius: 100,
    justifyContent:'center',
    alignSelf:'center',
    alignItems:'center',
-   borderWidth:2,
-   borderColor:'white'
+   borderWidth:3,
+   borderColor:'silver'
    
 }
 

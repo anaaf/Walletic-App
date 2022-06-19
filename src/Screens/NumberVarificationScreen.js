@@ -103,14 +103,14 @@ useEffect(()=>{
 
 })
   return (
-    <TouchableWithoutFeedback accessible={false}>
+    <TouchableWithoutFeedback>
       <View style={styles.container}>
         <View style={styles.header}>
           <Image source={require('../images/logo1.png')} style={styles.logo} />
         </View>
 
         <View style={styles.bodyContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} >
             <Text style={styles.getText}>Get Started</Text>
             <Text style={styles.text}>Enter Your Mobile Number</Text>
 
@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
   bodyContainer:{
     flex: 2,
     width:'100%',
+    height:'100%',
      backgroundColor: 'white', 
      justifyContent:'center', 
      alignSelf:'center'
